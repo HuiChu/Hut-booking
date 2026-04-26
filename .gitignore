@@ -5,6 +5,7 @@
 storage/auth_state*.json
 storage/form_fixtures/*.html
 storage/form_fixtures/*.json
+!storage/form_fixtures/synthetic_*.html
 logs/
 
 # python

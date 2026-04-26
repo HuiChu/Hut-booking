@@ -29,6 +29,15 @@ def login() -> None:
     )
 
 
+CANDIDATE_RECON_URLS: dict[str, str] = {
+    "home": "https://hike.taiwan.gov.tw/",
+    "apply_1": "https://hike.taiwan.gov.tw/apply_1.aspx?search=2",
+    "applySearch": "https://hike.taiwan.gov.tw/applySearch.aspx",
+    "apply_3": "https://hike.taiwan.gov.tw/apply_3.aspx",
+    "bed_0": "https://hike.taiwan.gov.tw/bed_0.aspx",
+}
+
+
 @app.command()
 def recon(
     url: str = typer.Option(..., "--url", "-u", help="要抓的表單頁完整 URL"),
@@ -71,6 +80,41 @@ def recon(
             typer.echo(f"  __VIEWSTATEGENERATOR len={len(viewstate.viewstate_generator)}")
             typer.echo(f"  __EVENTVALIDATION   len={len(viewstate.event_validation)}")
             typer.echo(f"\nHTML 已存到 {fixture_path}")
+
+    asyncio.run(run())
+
+
+@app.command("recon-batch")
+def recon_batch() -> None:
+    """批次抓所有候選 URL，存到 storage/form_fixtures/。需先 hut-bot login。"""
+    settings = load_settings()
+    log = setup_logging(settings.log_level, settings.logs_dir)
+
+    async def run() -> None:
+        async with build_client(settings.auth_state_path) as client:
+            for name, target_url in CANDIDATE_RECON_URLS.items():
+                try:
+                    response = await client.get(target_url, headers={"Referer": HIKE_ORIGIN + "/"})
+                    fixture_path = settings.fixtures_dir / f"{name}.html"
+                    fixture_path.write_text(response.text, encoding="utf-8")
+                    hidden = parse_all_hidden_inputs(response.text)
+                    viewstate = parse_viewstate(response.text)
+                    log.info(
+                        "recon_batch.fetched",
+                        name=name,
+                        url=target_url,
+                        status=response.status_code,
+                        length=len(response.text),
+                        hidden_count=len(hidden),
+                        has_viewstate=bool(viewstate.viewstate),
+                    )
+                    typer.echo(
+                        f"[{name}] {response.status_code} len={len(response.text)} "
+                        f"hidden={len(hidden)} → {fixture_path}"
+                    )
+                except Exception as exc:
+                    log.error("recon_batch.failed", name=name, url=target_url, error=str(exc))
+                    typer.echo(f"[{name}] FAILED: {exc}")
 
     asyncio.run(run())
 

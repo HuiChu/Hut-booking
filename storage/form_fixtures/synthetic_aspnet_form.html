@@ -1,0 +1,40 @@
+<!--
+合成 ASP.NET WebForms 範本，用於離線測試。實際欄位名與 hike.taiwan.gov.tw 可能
+不同 — 真實值需在 Phase 1 跑 hut-bot recon 後抓回來覆蓋。
+
+此 fixture 反映 ASP.NET WebForms 的典型結構：__VIEWSTATE / __EVENTVALIDATION /
+__VIEWSTATEGENERATOR / __EVENTTARGET / __EVENTARGUMENT。
+-->
+<!DOCTYPE html>
+<html>
+<head><title>合成範本：登山線上申請（路線表單）</title></head>
+<body>
+<form method="post" action="apply_4.aspx" id="aspnetForm">
+  <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+  <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+  <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="SYNTH_VIEWSTATE_BASE64_PLACEHOLDER==" />
+  <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="A1B2C3D4" />
+  <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="SYNTH_EVENTVAL_BASE64_PLACEHOLDER==" />
+
+  <select name="ddlRoute" id="ddlRoute">
+    <option value="">請選擇路線</option>
+    <option value="ROUTE_001">嘉明湖國家步道（抽籤制範例）</option>
+    <option value="ROUTE_002">雪霸雲稜山屋（先到先得範例）</option>
+  </select>
+
+  <input type="text" name="txtStartDate" id="txtStartDate" value="" placeholder="YYYY/MM/DD" />
+  <input type="text" name="txtNights" id="txtNights" value="1" />
+  <input type="text" name="txtPeople" id="txtPeople" value="1" />
+
+  <input type="text" name="txtLeaderName" id="txtLeaderName" value="" />
+  <input type="text" name="txtLeaderID" id="txtLeaderID" value="" />
+  <input type="text" name="txtLeaderPhone" id="txtLeaderPhone" value="" />
+  <input type="text" name="txtLeaderBirthday" id="txtLeaderBirthday" value="" placeholder="YYYY/MM/DD" />
+
+  <input type="checkbox" name="chkAgree" id="chkAgree" value="on" />
+  <label for="chkAgree">我已閱讀並同意申請須知</label>
+
+  <input type="submit" name="btnSubmit" id="btnSubmit" value="送出申請" />
+</form>
+</body>
+</html>

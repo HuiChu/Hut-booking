@@ -1,0 +1,27 @@
+# secrets and runtime artefacts
+.env
+.env.*
+!.env.example
+storage/auth_state*.json
+storage/form_fixtures/*.html
+storage/form_fixtures/*.json
+logs/
+
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store

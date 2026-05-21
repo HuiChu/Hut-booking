@@ -245,10 +245,52 @@ def schedule(
     start_date: datetime = typer.Option(..., "--start-date"),
     nights: int = typer.Option(1, "--nights"),
     people: int = typer.Option(1, "--people"),
+    open_hour: int = typer.Option(7, "--open-hour"),
+    open_minute: int = typer.Option(0, "--open-minute"),
+    open_second: int = typer.Option(0, "--open-second"),
+    once: bool = typer.Option(False, "--once", help="只跑一次（下一個開放時段），不常駐"),
+    retry_window_seconds: int = typer.Option(60, "--retry-window-seconds"),
 ) -> None:
-    """常駐排程：每天 06:59:50 預熱 → 07:00:00.000 觸發。Phase 4 後才能實作。"""
-    typer.echo("[stub] schedule 尚未實作 — 等 Phase 4 完成排程整合後再啟用")
-    raise typer.Exit(code=2)
+    """常駐排程：每天 06:59:50 預熱 → 07:00:00.000 觸發 → 重試到 07:01:00。"""
+    from .scheduling.cron import _next_open_time, run_daily_schedule, run_one_shot
+
+    settings = load_settings()
+    log = setup_logging(settings.log_level, settings.logs_dir)
+    get_handler(route)  # validate route_id before scheduling
+    params = _build_params_from_settings(settings, start_date, nights, people)
+
+    if once:
+        target = _next_open_time(open_hour, open_minute, open_second)
+        deadline = target + timedelta(seconds=retry_window_seconds)
+        log.info(
+            "schedule.once",
+            route=route,
+            target=target.isoformat(),
+            deadline=deadline.isoformat(),
+        )
+        asyncio.run(
+            run_one_shot(
+                route,
+                params,
+                settings.auth_state_path,
+                target=target,
+                deadline=deadline,
+                ntp_server=settings.ntp_server,
+            )
+        )
+    else:
+        asyncio.run(
+            run_daily_schedule(
+                route,
+                params,
+                settings.auth_state_path,
+                open_hour=open_hour,
+                open_minute=open_minute,
+                open_second=open_second,
+                retry_window_seconds=retry_window_seconds,
+                ntp_server=settings.ntp_server,
+            )
+        )
 
 
 @app.command("precise-wait-test")

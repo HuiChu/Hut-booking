@@ -54,11 +54,22 @@ hut-bot schedule --route <route_id> --start-date 2026-06-01 --nights 1 --people 
 
 | Phase | 內容 | 狀態 |
 |---|---|---|
-| 0 | 骨架（基礎模組、CLI skeleton、login + recon 可跑）| 進行中 |
-| 1 | Recon（強制）：實地抓 hike.taiwan.gov.tw 表單 HTML 分析欄位 | 待 user 執行 |
-| 2 | `hike_aspnet.py` RouteHandler 實作 | 阻塞於 Phase 1 |
-| 3 | `dry-run` / `grab` CLI 與線上 dry-run 驗證 | 阻塞於 Phase 2 |
-| 4 | `schedule` 整合 APScheduler + precise_wait | 阻塞於 Phase 3 |
+| 0 | 骨架（基礎模組、CLI skeleton、login + recon 可跑）| 完成 |
+| 1 | Recon 工具（checklist + recon-batch + 合成 fixture） | 工具完成；實地執行待 user |
+| 2 | `hike_aspnet.py` RouteHandler（基於合成 fixture，欄位名標 `RECON_TODO`） | 完成（待 recon 後校正欄位名） |
+| 3 | `dry-run` / `grab` CLI 串接 poster | 完成 |
+| 4 | `schedule` 整合 APScheduler + precise_wait | 完成 |
+
+## Phase 1 Recon 待 user 執行
+
+我（Claude）無法操作瀏覽器互動登入，且 hike.taiwan.gov.tw 真實欄位名是 agent 推測值。請執行：
+
+```bash
+hut-bot login         # 開瀏覽器手動登入，匯出 storage/auth_state.json
+hut-bot recon-batch   # 抓所有候選 URL 存到 storage/form_fixtures/
+```
+
+然後依 `docs/recon-checklist.md` 核對 `src/hut_bot/routes/hike_aspnet.py` 與 `routes/catalog.py` 中所有標 `# RECON_TODO:` 的位置，覆蓋為真實欄位名／URL／按鈕值。
 
 ## 結構
 

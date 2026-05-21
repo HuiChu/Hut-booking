@@ -1,16 +1,19 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime
-from pathlib import Path
+import json
+from datetime import datetime, timedelta
 
 import typer
 
 from .auth.playwright_login import interactive_login
-from .config import load_settings
+from .config import Settings, load_settings
 from .grabber.client import HIKE_ORIGIN, build_client, warm_up
+from .grabber.poster import dry_run_once, grab_until, post_once
 from .grabber.viewstate import parse_all_hidden_inputs, parse_viewstate
 from .logging_setup import setup_logging
+from .routes.base import BookingParams, Member
+from .routes.catalog import get_handler, list_routes
 
 app = typer.Typer(add_completion=False, help="Taiwan hut booking bot CLI")
 
@@ -119,6 +122,47 @@ def recon_batch() -> None:
     asyncio.run(run())
 
 
+def _build_params_from_settings(
+    settings: Settings,
+    start_date: datetime,
+    nights: int,
+    people: int,
+) -> BookingParams:
+    missing = [
+        name
+        for name, val in (
+            ("LEADER_NAME", settings.leader_name),
+            ("LEADER_ID", settings.leader_id),
+            ("LEADER_PHONE", settings.leader_phone),
+            ("LEADER_BIRTHDAY", settings.leader_birthday),
+        )
+        if not val
+    ]
+    if missing:
+        raise typer.BadParameter(f"請在 .env 設定：{', '.join(missing)}")
+
+    leader = Member(
+        name=settings.leader_name,
+        id_number=settings.leader_id,
+        phone=settings.leader_phone,
+        birthday=settings.leader_birthday,
+    )
+    return BookingParams(
+        start_date=start_date.date(),
+        nights=nights,
+        people=people,
+        leader=leader,
+        members=[],
+    )
+
+
+@app.command("list-routes")
+def list_routes_cmd() -> None:
+    """列出 catalog 已註冊的路線 ID。"""
+    for route_id in list_routes():
+        typer.echo(route_id)
+
+
 @app.command("dry-run")
 def dry_run(
     route: str = typer.Option(..., "--route", "-r"),
@@ -126,9 +170,24 @@ def dry_run(
     nights: int = typer.Option(1, "--nights"),
     people: int = typer.Option(1, "--people"),
 ) -> None:
-    """完整跑 GET → 組 payload → 印出但不真的 POST。Phase 2 後才能實作。"""
-    typer.echo("[stub] dry-run 尚未實作 — 等 Phase 2 完成 hike_aspnet handler 後再啟用")
-    raise typer.Exit(code=2)
+    """完整跑 GET → 組 payload → 印出但不真的 POST。"""
+    settings = load_settings()
+    log = setup_logging(settings.log_level, settings.logs_dir)
+    handler = get_handler(route)
+    params = _build_params_from_settings(settings, start_date, nights, people)
+
+    async def run() -> None:
+        async with build_client(settings.auth_state_path) as client:
+            report = await dry_run_once(handler, client, params)
+            log.info(
+                "dry_run.complete",
+                route=route,
+                form_url=report["form_url"],
+                payload_keys=sorted(report["payload"].keys()),
+            )
+            typer.echo(json.dumps(report, ensure_ascii=False, indent=2, default=str))
+
+    asyncio.run(run())
 
 
 @app.command()
@@ -137,10 +196,47 @@ def grab(
     start_date: datetime = typer.Option(..., "--start-date"),
     nights: int = typer.Option(1, "--nights"),
     people: int = typer.Option(1, "--people"),
+    deadline_minutes: int = typer.Option(
+        1, "--deadline-minutes", help="從現在算起多少分鐘內持續重試"
+    ),
+    retry_backoff: float = typer.Option(0.0, "--retry-backoff"),
 ) -> None:
-    """立即搶（debug 用）。Phase 3 後才能實作。"""
-    typer.echo("[stub] grab 尚未實作 — 等 Phase 3 完成搶票主迴圈後再啟用")
-    raise typer.Exit(code=2)
+    """立即搶（debug 用）。會在 deadline_minutes 內持續重試直到成功。"""
+    settings = load_settings()
+    log = setup_logging(settings.log_level, settings.logs_dir)
+    handler = get_handler(route)
+    params = _build_params_from_settings(settings, start_date, nights, people)
+    deadline = datetime.now() + timedelta(minutes=deadline_minutes)
+
+    async def run() -> None:
+        async with build_client(settings.auth_state_path) as client:
+            await warm_up(client, HIKE_ORIGIN + "/")
+            result = await grab_until(
+                handler, client, params, deadline=deadline, retry_backoff=retry_backoff
+            )
+            log.info(
+                "grab.complete",
+                route=route,
+                success=result.success,
+                booking_id=result.booking_id,
+                error=result.error_message,
+                http_status=result.http_status,
+            )
+            typer.echo(
+                json.dumps(
+                    {
+                        "success": result.success,
+                        "booking_id": result.booking_id,
+                        "error": result.error_message,
+                        "http_status": result.http_status,
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
+            raise typer.Exit(code=0 if result.success else 1)
+
+    asyncio.run(run())
 
 
 @app.command()

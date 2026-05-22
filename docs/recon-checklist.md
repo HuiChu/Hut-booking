@@ -4,18 +4,18 @@
 
 ## 前置準備
 
-```bash
-cp .env.example .env
+```powershell
+Copy-Item .env.example .env
 # 填入 HIKE_USERNAME / HIKE_PASSWORD / LEADER_*
 
-hut-bot login
+uv run hut-bot login
 # 開啟 Chromium → 手動登入（含 CAPTCHA / OTP）→ 自動匯出 storage/auth_state.json
 
-hut-bot recon-batch
+uv run hut-bot recon-batch
 # 抓所有候選 URL 存到 storage/form_fixtures/
 
 # 或單獨抓一個
-hut-bot recon --url https://hike.taiwan.gov.tw/applySearch.aspx --name applySearch
+uv run hut-bot recon --url https://hike.taiwan.gov.tw/applySearch.aspx --name applySearch
 ```
 
 ## 必須確認的項目
@@ -69,7 +69,7 @@ hut-bot recon --url https://hike.taiwan.gov.tw/applySearch.aspx --name applySear
 | 用途 | URL（推測） |
 |---|---|
 | 首頁 | https://hike.taiwan.gov.tw/ |
-| 登山申請主頁 | https://hike.taiwan.gov.tw/apply_1.aspx?search=2 |
+| 登山申請主頁 | https://hike.taiwan.gov.tw/apply_1.aspx |
 | 路線搜尋 | https://hike.taiwan.gov.tw/applySearch.aspx |
 | 申請進度 | https://hike.taiwan.gov.tw/apply_3.aspx |
 | 床位查詢 | https://hike.taiwan.gov.tw/bed_0.aspx |

@@ -28,9 +28,10 @@ def _handler() -> HikeAspnetHandler:
     return HikeAspnetHandler(
         HikeAspnetConfig(
             route_id="test",
-            route_value="R1",
-            form_url="https://example.test/form",
-            submit_url="https://example.test/submit",
+            route_code=2,
+            unit="TEST-UNIT",
+            fid=0,
+            camp_id=0,
         )
     )
 

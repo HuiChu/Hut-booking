@@ -1,0 +1,905 @@
+﻿
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>臺灣登山申請一站式服務網</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="favicon.ico" />
+
+    <!-- css bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- css Font Awesome -->
+    <link rel="stylesheet" href="css/all.css">
+
+    <!-- css bootstrap datetimepicker -->
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+
+    <!-- css bootstrap multiselect -->
+    <link rel="stylesheet" href="css/bootstrap-multiselect.css">
+
+    <!-- css system style -->
+    <link rel="stylesheet" href="css/web_style.css">
+    <link href="./css/jquery-ui.css" rel="stylesheet" type="text/css">
+    <!-- js jQuery -->
+    <script src="js/jquery-3.6.0.min.js" type="text/javascript"></script>
+
+    <!-- js Bootstrap JavaScript -->
+    <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+
+    <!-- bootstrap datetimepicker -->
+    <script src="js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap-datetimepicker.zh-TW.js" type="text/javascript"></script>
+
+    <!-- bootstrap multiselect -->
+    <script src="js/bootstrap-multiselect.min.js" type="text/javascript"></script>
+
+    <!-- js system js -->
+    <script src="js/system.js" type="text/javascript"></script>
+    <script src="js/HSTS/shares.js" type="text/javascript"></script>
+
+    <!-- js fancybox js -->
+    <script type="text/javascript" src="js/source/jquery.fancybox.js?v=2.1.5"></script>
+    <script type="text/javascript" src="js/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+    <script src="js/jquery.blockUI.js"></script>
+    <link type="text/css" href="js/Plugin/sweetalert.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/Plugin/sweetalert.min.js"></script>
+    <script type="text/javascript" src="js/HSTS/Swal.js"></script>
+    <script type="text/javascript" src='/js/jquery-ui-CETW.js'></script>
+    <script src="js/language.js"></script>
+    <link rel="stylesheet" href="js/Plugin/Chosen/chosen.css" />
+    <script src="js/Plugin/Chosen/chosen.jquery.min.js"></script>
+
+
+    <script src="js/jimmy.js?i=20260521211758"></script>
+    <script>       
+        function NotWorking() {
+            ShowSwal(-1, "", "功能調整中");
+        }
+    </script>
+    
+    <script>
+        const ForestCamps = ["B80BDDE7-8F9D-4008-9FA8-81B0D5F4492F", "60D5A789-676C-47D6-8F6D-2B991A5D730D", "C578142E-AE41-41B2-8169-39D8A8462F37"];
+        const Mount3 = ["105E956F-D8DA-49F7-A9B7-3AEFDDA88A12", "E6DD4652-2D37-4346-8F5D-6E538353E0C2", "C951CDCD-B75A-46B9-8002-8EF952EC95FD"];
+        $(function () {
+            sessionStorage.clear();
+            $('.fancybox').fancybox();
+            $("#levelweb").fancybox({
+                'width': 800,
+                'height': 600,
+                'autoScale': false,
+                'transitionIn': 'none',
+                'transitionOut': 'none',
+                'type': 'iframe'
+            });
+            $(".fancybox").fancybox({  //鎖定位置不移動最上面
+                helpers: {
+                    overlay: {
+                        locked: false
+                    }
+                }
+            });
+            $.fancybox.update();
+        });
+
+        function setorg(id) {
+            $("#hidorgid").val(id);
+            //$("#lineclick").trigger("click");
+            $("#con_txLine").val("");
+            $("#btnselectClick").trigger("click");
+        }
+
+        function cssreset() {
+            $('.fancybox').fancybox();
+            $("#picweb").fancybox({
+                'width': 800,
+                'height': 600,
+                'autoScale': false,
+                'transitionIn': 'none',
+                'transitionOut': 'none',
+                'type': 'iframe'
+            });
+            $("#levelweb").fancybox({
+                'width': 800,
+                'height': 600,
+                'autoScale': false,
+                'transitionIn': 'none',
+                'transitionOut': 'none',
+                'type': 'iframe'
+            });
+            $(".fancybox").fancybox({  //鎖定位置不移動最上面
+                helpers: {
+                    overlay: {
+                        locked: false
+                    }
+                }
+            });
+            $.fancybox.update();
+            $(".multiple_kw").multiselect({
+                enableFiltering: true,
+                filterPlaceholder: '請輸入關鍵字',
+                buttonWidth: '100%',
+                minWidth: '100%',
+                maxHeight: 480
+            });
+            if ($("#hidorgid").val() == "0") {
+                $('button[id*="org"]').each(function () {
+                    $(this).removeAttr("class");
+                    $(this).attr("class", "btn btn-outline-secondary");
+                });
+                $("#org").removeAttr("class").attr("class", "btn btn-outline-secondary active");
+
+            }
+            else {
+                $('button[id*="org"]').each(function () {
+                    $(this).removeAttr("class");
+                    $(this).attr("class", "btn btn-outline-secondary");
+                });
+                $("#org" + $("#hidorgid").val()).removeAttr("class").attr("class", "btn btn-outline-secondary active");
+            }
+        }
+
+        function OtherRoute(c_id, f_id, org_id, source_guid) {
+
+            //if (c_id == "22" || c_id == "23" || c_id == "24" || c_id == "55" || c_id == "661" || c_id == "662" || c_id == "665" || c_id == "666") { 
+            //    swal({
+            //        title: '入園公告',
+            //        text: "<div>本處新建奇萊稜線山屋將於暑假期間辦理建材吊掛作業，屆時將全面禁止入園，如同意再繼續申請作業。</div>",
+            //        type: 'warning',
+            //        html: true,
+            //        allowOutsideClick: false,
+            //        allowEscapeKey: false,
+            //        allowEnterKey: false,
+            //        showCancelButton: true,
+            //        confirmButtonColor: '#d33',
+            //        cancelButtonColor: 'rgba(0,0,0,.3)',
+            //        confirmButtonText: '同意',
+            //        cancelButtonText: "不同意",
+            //        closeOnConfirm: false
+            //    },
+            //        function (isConfirm) {
+            //            if (isConfirm) { 
+            //                $.post("apply_1.aspx", { "Func": "ApplyFixedclimbRelation", "Value": c_id }, 'json').done(function (response) {
+            //                    if (response.result.Status) {
+            //                        let Datas = response.result.Datas;
+            //                        if (Datas && Datas.length > 0) {
+            //                            swal({
+            //                                title: '是否需要同時申請以下入山/山屋/路線?',
+            //                                text: "<div>路線選擇：<div name='SelectRoute' style='width: 80%;float: right;'></div><div style='width: 100%;float: right;'><p style='color: #d33'>是：系統將協助進行複合申請</p><p style='color: #5cb85c'>否：直接進行該項目申請流程</p><div data-id='org'></div></div></div>",
+            //                                type: 'warning',
+            //                                html: true,
+            //                                allowOutsideClick: false,
+            //                                allowEscapeKey: false,
+            //                                allowEnterKey: false,
+            //                                showCancelButton: true,
+            //                                confirmButtonColor: '#d33',
+            //                                cancelButtonColor: 'rgba(0,0,0,.3)',
+            //                                confirmButtonText: '是',
+            //                                cancelButtonText: "否",
+            //                                closeOnConfirm: false
+            //                            },
+            //                                function (isConfirm) {
+            //                                    if (isConfirm) {
+            //                                        let selected = $(".sweet-alert select[name='SelectRouted']").find('option:selected').val();
+            //                                        let cid = $(".sweet-alert select[name='SelectRouted']").find('option:selected').attr("cid");
+            //                                        let fid = $(".sweet-alert select[name='SelectRouted']").find('option:selected').attr("fid");
+            //                                        switch (org_id.toUpperCase()) {
+            //                                            case "105E956F-D8DA-49F7-A9B7-3AEFDDA88A12":
+            //                                            case "E6DD4652-2D37-4346-8F5D-6E538353E0C2":
+            //                                            case "C951CDCD-B75A-46B9-8002-8EF952EC95FD":
+            //                                                window.location.href = "apply_1_2.aspx?unit=" + org_id + "&cid=" + c_id + "&fid=" + f_id + "&camp_id=" + cid;
+            //                                                break
+            //                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A85":
+            //                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A86":
+            //                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A87":
+            //                                            case "84BC7D2B-AD3E-4F39-B568-A96681087F74":
+            //                                                window.location.href = "apply_1_2.aspx?unit=" + selected + "&cid=" + cid + "&fid=" + fid + "&camp_id=" + cid;
+            //                                                break;
+            //                                            case "8F7C09DC-AFEB-4708-A7BB-B20DA2A24648":
+            //                                                window.location.href = "apply_1_2.aspx?unit=" + selected + "&cid=" + cid + "&fid=" + fid + "&camp_id=" + 0;
+            //                                                break;
+            //                                        }
+            //                                    } else {
+            //                                        switch (org_id.toUpperCase()) {
+            //                                            case "105E956F-D8DA-49F7-A9B7-3AEFDDA88A12":
+            //                                            case "E6DD4652-2D37-4346-8F5D-6E538353E0C2":
+            //                                            case "C951CDCD-B75A-46B9-8002-8EF952EC95FD":
+            //                                                window.location.href = "apply_1_2.aspx?unit=" + org_id + "&cid=" + c_id + "&fid=" + f_id + "&camp_id=" + 0;
+            //                                                break
+            //                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A85":
+            //                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A86":
+            //                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A87":
+            //                                                window.location.href = "apply_forest_area_1.aspx?unit=" + org_id + "&tmpc_id=" + c_id + "&tmpf_id=" + f_id;
+            //                                                break;
+            //                                            case "84BC7D2B-AD3E-4F39-B568-A96681087F74":
+            //                                                window.location.href = "apply_forest_camp_1.aspx?unit=" + source_guid;
+            //                                                break;
+            //                                            case "8F7C09DC-AFEB-4708-A7BB-B20DA2A24648":
+            //                                                window.location.href = "apply_npa_1.aspx?unit=" + source_guid;
+            //                                                break;
+            //                                        }
+            //                                    }
+            //                                });
+            //                            $(".sweet-alert .cancel").css('background-color', '#5cb85c');
+            //                            let OptionStr = '<select name="SelectRouted" class="form-control" >';
+            //                            $.each(Datas, function (Index, Ary) {
+            //                                OptionStr += '<option  org_name="' + Ary.orgName + '"  fid="' + Ary.f_id + '" cid="' + Ary.c_id + '" value="' + Ary.OrgID + '" ';
+            //                                OptionStr += '>' + Ary.name;
+            //                                OptionStr += '</option>';
+            //                            });
+            //                            OptionStr += "</select>";
+            //                            $(".sweet-alert div[name='SelectRoute']").html(OptionStr);
+
+            //                            $(".sweet-alert div[name='SelectRoute").on("change", function (i, o) {
+            //                                let org_name = $(".sweet-alert select[name='SelectRouted']").find('option:selected').attr("org_name");
+            //                                let name = $(".sweet-alert select[name='SelectRouted']").find('option:selected').text();
+            //                                if (org_name) {
+            //                                    $(".sweet-alert [data-id='org']").empty();
+            //                                    let html = "<p style='color: #d33'>" + name + "的審查單位:" + org_name + "</p>"
+            //                                    if (response.result.Message) {
+            //                                        html += "<p style='color: #5cb85c'>" + response.result.Message + "</p>";
+            //                                    }
+            //                                    $(".sweet-alert [data-id='org']").html(html)
+            //                                }
+            //                            });
+            //                            $(".sweet-alert div[name='SelectRoute").change();
+            //                        } else {
+            //                            switch (org_id.toUpperCase()) {
+            //                                case "105E956F-D8DA-49F7-A9B7-3AEFDDA88A12":
+            //                                case "E6DD4652-2D37-4346-8F5D-6E538353E0C2":
+            //                                case "C951CDCD-B75A-46B9-8002-8EF952EC95FD":
+            //                                    window.location.href = "apply_1_2.aspx?unit=" + org_id + "&cid=" + c_id + "&fid=" + f_id + "&camp_id=" + 0;
+            //                                    break
+            //                                case "7D0ED03D-E3FF-4482-8254-96F6434F5A85":
+            //                                case "7D0ED03D-E3FF-4482-8254-96F6434F5A86":
+            //                                case "7D0ED03D-E3FF-4482-8254-96F6434F5A87":
+            //                                    window.location.href = "apply_forest_area_1.aspx?unit=" + org_id + "&tmpc_id=" + c_id + "&tmpf_id=" + f_id;
+            //                                    break;
+            //                                case "84BC7D2B-AD3E-4F39-B568-A96681087F74":
+            //                                    window.location.href = "apply_forest_camp_1.aspx?unit=" + source_guid;
+            //                                    break;
+            //                                case "8F7C09DC-AFEB-4708-A7BB-B20DA2A24648":
+            //                                    window.location.href = "apply_npa_1.aspx?unit=" + source_guid;
+            //                                    break;
+            //                            }
+            //                        }
+            //                    }
+            //                });
+
+
+            //            } else {
+            //                swal.close();
+            //            }
+            //        });
+            //}
+            //else
+
+            if (c_id == "21" || c_id == "132") {
+                swal({
+                    title: '暫停入園申請',
+                    text: "<div>受地震、風災影響，本處錐麓古道路線有災損，故該路線持續封閉並暫停入園申請。</div>",
+                    type: 'warning',
+                    html: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: 'rgba(0,0,0,.3)',
+                    confirmButtonText: '確定',
+                    closeOnConfirm: false
+                },
+                    function () {
+                        swal.close()
+                    });
+
+
+            } else if (c_id == "35") {
+
+
+                swal({
+                    title: '暫停入園申請',
+                    text: "<div>受地震、風災影響，本處清水山路線有災損，故該路線持續封閉並暫停入園申請。</div>",
+                    type: 'warning',
+                    html: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: 'rgba(0,0,0,.3)',
+                    confirmButtonText: '確定',
+                    closeOnConfirm: false
+                },
+                    function () {
+                        swal.close()
+                    });
+            }
+            else {
+
+                $.post("apply_1.aspx", { "Func": "ApplyFixedclimbRelation", "Value": c_id }, 'json').done(function (response) {
+                    if (response.result.Status) {
+                        let Datas = response.result.Datas;
+                        if (Mount3.indexOf(org_id.toUpperCase()) > -1) {
+                            Datas = Datas.filter(Ary => Ary.OrgID.toUpperCase() !== "8F7C09DC-AFEB-4708-A7BB-B20DA2A24648");
+                        }
+                        if (Datas && Datas.length > 0) {
+                            swal({
+                                title: '是否需要同時申請以下入山/山屋/路線?',
+                                text: "<div>路線選擇：<div name='SelectRoute' style='width: 80%;float: right;'></div><div style='width: 100%;float: right;'><p style='color: #d33'>是：系統將協助進行複合申請</p><p style='color: #5cb85c'>否：直接進行該項目申請流程</p><div data-id='org'></div></div></div>",
+                                type: 'warning',
+                                html: true,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false,
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: 'rgba(0,0,0,.3)',
+                                confirmButtonText: '是',
+                                cancelButtonText: "否",
+                                closeOnConfirm: false
+                            },
+                                function (isConfirm) {
+                                    if (isConfirm) {
+                                        let selected = $(".sweet-alert select[name='SelectRouted']").find('option:selected').val();
+                                        let cid = $(".sweet-alert select[name='SelectRouted']").find('option:selected').attr("cid");
+                                        let fid = $(".sweet-alert select[name='SelectRouted']").find('option:selected').attr("fid");
+                                        switch (org_id.toUpperCase()) {
+                                            case "105E956F-D8DA-49F7-A9B7-3AEFDDA88A12":
+                                            case "E6DD4652-2D37-4346-8F5D-6E538353E0C2":
+                                            case "C951CDCD-B75A-46B9-8002-8EF952EC95FD":
+                                                window.location.href = "apply_1_2.aspx?unit=" + org_id + "&cid=" + c_id + "&fid=" + f_id + "&camp_id=" + cid;
+                                                break
+                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A85":
+                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A86":
+                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A87":
+                                                window.location.href = "apply_1_2.aspx?unit=" + selected + "&cid=" + cid + "&fid=" + fid + "&camp_id=" + cid;
+                                                break;
+                                            case "84BC7D2B-AD3E-4F39-B568-A96681087F74":
+                                                if (selected.toUpperCase() === '8F7C09DC-AFEB-4708-A7BB-B20DA2A24648') {
+                                                    window.location.href = "apply_forest_camp_1.aspx?unit=" + source_guid + "&hasNpa=" + 1;
+                                                } else {
+                                                    window.location.href = "apply_1_2.aspx?unit=" + selected + "&cid=" + cid + "&fid=" + fid + "&camp_id=" + cid;
+                                                }
+                                                break;
+
+                                            case "8F7C09DC-AFEB-4708-A7BB-B20DA2A24648":
+                                                if (selected.toUpperCase() === '84BC7D2B-AD3E-4F39-B568-A96681087F74') {
+                                                    window.location.href = "apply_forest_camp_1.aspx?unit=" + source_guid + "&hasNpa=" + 1;
+                                                } else {
+                                                    window.location.href = "apply_1_2.aspx?unit=" + selected + "&cid=" + cid + "&fid=" + fid + "&camp_id=" + 0;
+                                                }
+                                                break;
+                                        }
+                                    } else {
+                                        switch (org_id.toUpperCase()) {
+                                            case "105E956F-D8DA-49F7-A9B7-3AEFDDA88A12":
+                                            case "E6DD4652-2D37-4346-8F5D-6E538353E0C2":
+                                            case "C951CDCD-B75A-46B9-8002-8EF952EC95FD":
+                                                window.location.href = "apply_1_2.aspx?unit=" + org_id + "&cid=" + c_id + "&fid=" + f_id + "&camp_id=" + 0;
+                                                break
+                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A85":
+                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A86":
+                                            case "7D0ED03D-E3FF-4482-8254-96F6434F5A87":
+                                                window.location.href = "apply_forest_area_1.aspx?unit=" + org_id + "&tmpc_id=" + c_id + "&tmpf_id=" + f_id;
+                                                break;
+                                            case "84BC7D2B-AD3E-4F39-B568-A96681087F74":
+                                                window.location.href = "apply_forest_camp_1.aspx?unit=" + source_guid;
+                                                break;
+                                            case "8F7C09DC-AFEB-4708-A7BB-B20DA2A24648":
+                                                window.location.href = "apply_npa_1.aspx?unit=" + source_guid;
+                                                break;
+                                        }
+                                    }
+                                });
+                            $(".sweet-alert .cancel").css('background-color', '#5cb85c');
+                            let OptionStr = '<select name="SelectRouted" class="form-control" >';
+                            $.each(Datas, function (Index, Ary) {
+                                OptionStr += '<option  org_name="' + Ary.orgName + '"  fid="' + Ary.f_id + '" cid="' + Ary.c_id + '" value="' + Ary.OrgID + '" ';
+                                OptionStr += '>' + Ary.name;
+                                OptionStr += '</option>';
+                            });
+                            OptionStr += "</select>";
+                            $(".sweet-alert div[name='SelectRoute']").html(OptionStr);
+
+                            $(".sweet-alert div[name='SelectRoute").on("change", function (i, o) {
+                                let org_name = $(".sweet-alert select[name='SelectRouted']").find('option:selected').attr("org_name");
+                                let name = $(".sweet-alert select[name='SelectRouted']").find('option:selected').text();
+                                if (org_name) {
+                                    $(".sweet-alert [data-id='org']").empty();
+                                    let html = "<p style='color: #d33'>" + name + "的審查單位:" + org_name + "</p>"
+                                    if (response.result.Message) {
+                                        html += "<p style='color: #5cb85c'>" + response.result.Message + "</p>";
+                                    }
+                                    $(".sweet-alert [data-id='org']").html(html)
+                                }
+                            });
+                            $(".sweet-alert div[name='SelectRoute").change();
+                        } else {
+                            switch (org_id.toUpperCase()) {
+                                case "105E956F-D8DA-49F7-A9B7-3AEFDDA88A12":
+                                case "E6DD4652-2D37-4346-8F5D-6E538353E0C2":
+                                case "C951CDCD-B75A-46B9-8002-8EF952EC95FD":
+                                    window.location.href = "apply_1_2.aspx?unit=" + org_id + "&cid=" + c_id + "&fid=" + f_id + "&camp_id=" + 0;
+                                    break
+                                case "7D0ED03D-E3FF-4482-8254-96F6434F5A85":
+                                case "7D0ED03D-E3FF-4482-8254-96F6434F5A86":
+                                case "7D0ED03D-E3FF-4482-8254-96F6434F5A87":
+                                    window.location.href = "apply_forest_area_1.aspx?unit=" + org_id + "&tmpc_id=" + c_id + "&tmpf_id=" + f_id;
+                                    break;
+                                case "84BC7D2B-AD3E-4F39-B568-A96681087F74":
+                                    window.location.href = "apply_forest_camp_1.aspx?unit=" + source_guid;
+                                    break;
+                                case "8F7C09DC-AFEB-4708-A7BB-B20DA2A24648":
+                                    window.location.href = "apply_npa_1.aspx?unit=" + source_guid;
+                                    break;
+                            }
+                        }
+                    } else {
+
+                    }
+                });
+
+            }
+
+
+            return false;
+        }
+    </script>
+
+    
+</head>
+<body>
+    <form method="post" action="./apply_1.aspx" id="form1" autocomplete="off">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEyMDEyMDgzODkPZBYCZg9kFgICAQ9kFgICAw9kFgICAQ9kFgICAQ9kFgJmD2QWAgIFDxBkEBVfDOWFqOmDqOi3r+e3mgzlsY/poqjlsbHnt5ocKDTntJopIOS4rembquWxseOAgeWkp+mbquWxsSUoMue0mikg6aas6YGU5ouJ5rqq55m75bGx5Y+j5a6/54ef5ZywECg057SaKSDnp4DpnLjnt5oY5LmZ5aWz54CR5biD5Zau5pel5b6A6L+UKTJ+NeWkqSjloZTloZTliqAgLSDnjonlsbHnt5ogLSDloZTloZTliqApGOeOieWxseWJjeWzsOWWruaXpeW+gOi/lBXnjonlsbHnt5rllq7ml6XlvoDov5RKMn4z5aSpKOmAsua2h+apiy/ljZfkuIDmrrUgLSDluqvlk4joq77ovpvlsbEv6Zec5bGxIC0g6YCy5raH5qmLL+WNl+S4gOautSkM5aWH6JCK5p2x56icDOWlh+iQiuWNl+WzsA/nvorpoK3lsbHllq7mlLskNH425aSpKOadseWflC0g56eA5aeR5beSIOKAkyDmnbHln5QpOzF+OeWkqSjlkJHpmb0v5Y2X5a6JIOKAkyDmlrDlurfmqavmlrfnt5og4oCTIOWNl+WuiS/lkJHpmb0pNTLlpKko5aGU5aGU5YqgIC0g546J5bGx57eaIC0g5aGU5aGU5YqgKSjlpJbnsY3mj5DliY0pMzJ+OeWkqSjlkJHpmb0v5p2x5Z+UIC0g5Y2X5LqM5q61IOKAkyDmnbHln5Qv5ZCR6Zm9KUYyfjnlpKko5p2x5Z+UL+eOiemHjOael+mBk+KAk+mmrOWNmuaLieaWr+apq+aWt+KAk+adseWflC/njonph4zmnpfpgZMpKSgz57SaKSAg5LiD5Y2h44CB6Zuq5bGx5p2x5bOw5Zau5pel5b6A6L+UHSgz57SaKSAg5LiD5Y2h44CB6Zuq5bGx5p2x5bOwISgz57SaKSDpm6rlsbHkuLvls7Ao5aSa5pel6KGM56iLKSEoNOe0mikg6Zuq5bGx5Li75bOwKOWWruaXpeW+gOi/lCkcKDTntJopIOmbquWxseWMl+WzsOOAgee/oOaxoBXpm6rlnLDoqJPvppbnlLPoq4vmoYgWKDPntJopIOW/l+S9s+mZveWkp+WxsRooNOe0mikg5b+X5L2z6Zm9LembquWxsee3miAoNee0mikg5b+X5L2z6Zm9LembquWxseWMl+WzsOe3mhwoM+e0mikg5o6o6KuW5bGx5Zau5pel5b6A6L+UECg057SaKSDlpKflio3nt5oQKDTntJopIOWkp+mcuOe3miooNee0mikg5aSn6Zy457eaKOmmluaXpeS9j+Wuv+S4remcuOWxseWxiykWKDXntJopIOWkp+mcuOWMl+eonOe3mhQoNee0mikg6IGW56ic57eaSeWeixQoNee0mikg6IGW56ic57eaT+WeixQoNee0mikg6IGW56ic57eaWeWeixMoNue0mikg5YW25LuW6Lev57eaJOiLl+agl+S4iee+qeeBq+eCjuWxseiHqueEtuS/neeVmeWNgCHmt6HmsLTmsrPntIXmqLnmnpfoh6rnhLbkv53nlZnljYAh5Z2q5p6X5Y+w54Gj5rK55p2J6Ieq54S25L+d55WZ5Y2AHueDj+efs+m8u+a1t+WyuOiHqueEtuS/neeVmeWNgCHljZfmvrPpl4rokYnmqLnmnpfoh6rnhLbkv53nlZnljYAY5Lmd5Lmd5bOw6Ieq54S25L+d55WZ5Y2AHuiHuueBo+S4gOiRieiYreiHqueEtuS/neeVmeWNgCfmtbflsrjlsbHohIjoh7rmnbHomIfpkLXoh6rnhLbkv53orbfljYAq57+h57+g5rC05bqr6aOf6JuH6b6c6YeO55Sf5YuV54mp5L+d6K235Y2AG+eOiemHjOmHjueUn+WLleeJqeS/neitt+WNgC3mj5LlpKnlsbHoh6rnhLbkv53nlZnljYAgLSDnpo/lt7TotorltrrmraXpgZM55o+S5aSp5bGx6Ieq54S25L+d55WZ5Y2AIC0g5YyX5o+S5aSp5bGx5q2l6YGT5Y+K5YW25pSv57eaVOaPkuWkqeWxseiHqueEtuS/neeVmeWNgCAtIOmZpOWMl+aPkuWkqeWxseatpemBk+WPiuemj+W3tOi2iuW2uuatpemBk+WkluWFtuS7lui3r+e3mhjptJvptKbmuZboh6rnhLbkv53nlZnljYAP5YWl5bGx6K2J55Sz6KuLDOWQkemZveWxseWxixblmInmmI7muZblsbHlsYsv54ef5ZywE+aqnOiwt+WxseiOii/nh5/lnLAT5aSp5rGg5bGx6I6KL+eHn+WcsBYoNee0mikg6Zuq5bGx6KW/56ic57eaFTF+MTXlpKko5YW25LuW6Lev57eaKUwzfjXlpKnlhbbku5bot6/nt5oo5p2x5Z+UL+WhlOWhlOWKoCAtIOWFq+mAmumXnOeOieWxsee3miAtIOWhlOWhlOWKoC/mnbHln5QpSDR+OeWkqeWFtuS7lui3r+e3mijljZflrokv5p2x5Z+UIC0g5YWr6YCa6Zec6LaK5ba657eaIOKAkyDmnbHln5Qv5Y2X5a6JKR7ljZfmuZbkuK3lpK7lsJYgKOWMl+S4gOautee3mikY5YyX5LiA5q6157ix6LWw5YyX5LqM5q61HuWMl+S6jOaute+8iOmsvOmWgOmXnOaWt+W0lu+8iQ/ploLlsbHpiLTps7TlsbEM6ZaC5bGx5Zau5pS7EueVouelv+e4sei1sOe+iumgrQnnlaLnpb/lsbEkMn4z5aSpICjljZflrokgLSDnk6bmi4nnsbMgLSDljZflrokpFeeTpuaLieexs+WWruaXpeW+gOi/lCYyfjPlpKko5p2x5Z+UIOKAk+WFq+mAmumXnCDigJMg5p2x5Z+UKSLluqvlk4joq77ovpvlsbEv6Zec5bGx5Zau5pel5b6A6L+UI+WMl+S4gOautee4sei1sOWMl+S6jOautSjljZflvoDljJcpEyg157SaKSDlpKflsI/lio3nt5oQKDXntJopIOmbquWKjee3mj4oM+e0mikg5q2m6Zm15LiA56eA5oiW5LqM56eAICjmoYPlsbHjgIHmsaDmnInlsbEpIOWWruaXpeW+gOi/lCgoM+e0mikg5q2m6Zm15LiJ56eAICjkuI3ljIXlkKvlk4HnlLDlsbEpJSg057SaKSDlloDmi4nmpa3lsbHllq7ml6XplbfnqIvlvoDov5QiKDTntJopIOWTgeeUsOWxseWWruaXpemVt+eoi+W+gOi/lBYoNOe0mikg5q2m6Zm15Zub56eA57eaMjN+OOWkqSjljZflrokgLSDlhavpgJrpl5zotorltrrnt5rmnbHmrrUgLSDljZflrokpPOWFtuS7lu+8iOmdnuWCs+e1sei3r+e3muS9humAsuWFpeWNgOWfn+WxrOeUn+aFi+S/neitt+WNgO+8iRjlh7rpm7LlsbHoh6rnhLbkv53nlZnljYAY5aSn5q2m5bGx6Ieq54S25L+d55WZ5Y2ALeWkp+atpuS6i+alreWNgOWPsOeBo+epl+iKseadieiHqueEtuS/neeVmeWNgCrlj7DmnbHntIXokYnmnZHlj7DmnbHomIfpkLXoh6rnhLbkv53nlZnljYAY5oyW5a2Q5bC+6Ieq54S25L+d55WZ5Y2AIeeUsuS7meWbm+W+t+WMluefs+iHqueEtuS/neitt+WNgB7ljYHlhavnvoXmvKLlsbHoh6rnhLbkv53orbfljYAh6Zec5bGx6Ie654Gj5rW35qOX6Ieq54S25L+d6K235Y2AIeWkp+atpuiHuueBo+ayueadieiHqueEtuS/neitt+WNgBzlhbbku5bot6/nt5pf5Y2X5rmW5aSn5bGx57eaGeWFtuS7lui3r+e3ml/lpYfokIrnvqTls7AV5aWH6JCK5Li744CB5YyX5bOw57eaDOWlh+iQiumAo+WzsEvljZfmuZblpKflsbHnt5oo5Zug5om/6LyJ6YeP55Ww5YuV77yM5YWl5ZyS5pel5pyf54K6MTE0LjcuMeS7peW+jOiAhemBqeeUqCkV5aWH6JCK5YyX5bGP6aKo5bGx57eaFV8AAzE1MAMxNTMDMTU1AzE1NgExATIBMwE0ATUCMjQCMjUCMzQCNTcCNjECNjICODkCOTACOTcCOTgCOTkDMTAwAzEwMgMxMDMDMTA0AzEwNQMxMDYDMTA3AzEwOAMxMTgDMTE5AzEyMAMxMjEDMTIyAzEyMwMxMjQDNjA5AzYxMAM2MTEDNjEyAzYxMwM2MTQDNjE1AzYyNgM2MjcDNjI4AzYyOQM2MzADNjMxAzYzMgMxNTcDMTU4AzE1OQMxNjADMTYxAzEyNQMxMjgDMTMwAzEzMQIyNwIyOAIyOQIzMAIzMQIzMgIzMwE2ATcCMTACODEDMTA5AzExMAMxMTEDMTEyAzExMwMxMTQDMTE1AzExNgI1MQI1NQM2MTYDNjE3AzYxOAM2MTkDNjIwAzYyMgM2MjMDNjI0AzYyNQM2NjEDNjYyAzY2NQM2NjYDNjY3AzY3NRQrA19nZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2RkZF5WSyKpnG444AaELW0cIlX1XnVgW7UKHzV+MDoF4xwM" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=T6Nh5aykfJHQx6c4fqve2vpkJu4h6jkHshXTKbP8hQPUpTjmq_IdV7U3U0RytaWrVeFFW8bvbJpPAUTxOrAG2_kj5NBlN6sd-qTGDmFiP6Y1&amp;t=638901829900000000" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=FjV3RZndPgOvujXchshhQGY4GQccXZHsN3RYHkXQ9EbRV1yiTZWEirvrnP8Up4vuap6WOHOVmov78obftAfbdebXYHItb-bOdvydd6w4pS2fvfpoy_O9WVpmnaT3QrRlNHpW3UUjcrJ6aHw8BDgoeQ2&amp;t=7f16157c" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax 用戶端架構無法載入。');
+//]]>
+</script>
+
+<script src="/ScriptResource.axd?d=s5ijSIZEyusJApiAwyAt4HLXaItmz2ss38GCOhsLHuqw_kZSmf6HCgOdH_p8GRJitWr1a8_79jpJHSc2z3HtT6czyl9wF7MleN7Ou3VUUc9fEUNEWqQNw7zFhaT9jesgIiaYnH35deCqTqC4jT9qBg2&amp;t=7f16157c" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="97644EB5" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="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" />
+</div>
+        <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', 'form1', ['tctl00$con$UpdatePanel1','con_UpdatePanel1','tctl00$con$UpdatePanel2','con_UpdatePanel2'], [], ['ctl00$con$btnselect','con_btnselect'], 90, 'ctl00');
+//]]>
+</script>
+
+        <div class="sys_header">
+            <div class="dropdown dropleft pull-right mt-3 mr-1 ml-4">
+                <div class="pull-left mr-2" style="margin-top: -0.2em;">
+                    <div class="input-group input-group-sm" style="z-index: 2;">
+                        <input name="ctl00$googletxt" type="text" id="googletxt" class="form-control" placeholder="全站搜尋" />
+                        <div class="input-group-append">
+                            <a id="btngoogle" class="btn btn-secondary" href="javascript:__doPostBack(&#39;ctl00$btngoogle&#39;,&#39;&#39;)"><i class="fas fa-search"></i>查詢</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="./en/web_index.aspx" class="text-white-50">【EN】</a>
+                <a href="./jp/web_index.aspx" class="text-white-50">【日本語】</a>
+            </div>
+            <div class="main_menu_box  con_web_bg">
+                <a href="#" id="pull" class="btn btn-sm btn-light"><i class="fas fa-bars"></i></a>
+                <div class="main_menu">
+                    <div class="menu_group sys_logo_btn">
+                        <a class="m_menu_btn sys_logo" title="臺灣登山申請一站式服務網" href="web_index.aspx">臺灣登山申請一站式服務網</a>
+                    </div>                    
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink3" tabindex="7" title="公布欄" href="#">公布欄</a>
+                        <span class="menu_list">
+                            <a id="con_HyperLink4" tabindex="8" title="最新消息" href="news_0.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;最新消息</a>
+                            <a id="con_HyperLink5" tabindex="9" title="違規名單" href="news_5.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;違規名單</a>
+                            <a id="con_HyperLink6" tabindex="10" title="檔案下載" href="news_6.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;檔案下載</a>
+                            <a id="con_HyperLink7" tabindex="11" title="常見問答" href="news_7.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;常見問答</a>
+                            <a href="#" class="close_up btn btn-sm btn-block btn-light"><i class="fas fa-chevron-up"></i></a>
+                        </span>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink24" tabindex="28" title="登山申請" href="#"><b>登山申請</b></a>
+                        <span class="menu_list">
+                            <a id="con_HyperLink25" tabindex="29" title="各項線上申請" href="apply_1.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;各項線上申請</a>
+                            <a id="con_HyperLinkSearch" tabindex="200" title="申請進度查詢/繳費/異動/取消" href="applySearch.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;申請進度查詢/繳費/異動/取消</a>
+                            
+                            
+                            <a id="A6" tabindex="30" title="草稿編輯" href="apply_2_1.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;草稿編輯</a>
+                            
+                            
+                            <a id="A8" tabindex="32" title="國家公園出園回報" href="apply_6.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;國家公園出園回報</a>
+                            <a href="#" class="close_up btn btn-sm btn-block btn-light"><i class="fas fa-chevron-up"></i></a>
+                        </span>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink8" tabindex="12" title="登山須知" href="notice.aspx">登山須知</a>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink14" tabindex="18" title="登山路線開放狀態" href="open.aspx">登山路線開放狀態</a>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink15" tabindex="19" title="宿營地與床位查詢" href="#">宿營地與床位查詢</a>
+                        <span class="menu_list">
+                            <a id="con_HyperLink32" tabindex="20" title="林業及自然保育署宿營地查詢" href="bed_0.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;林業及自然保育署宿營地查詢</a>
+                            <a id="con_HyperLink29" tabindex="20" title="太魯閣山屋查詢" href="bed_4.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;太魯閣山屋查詢</a>
+                            <a id="con_HyperLink30" tabindex="20" title="太魯閣路線查詢" href="bed_5.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;太魯閣路線查詢</a>
+                            <a id="con_HyperLink16" tabindex="20" title="雪霸宿營地查詢" href="bed_1.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;雪霸宿營地查詢</a>
+                            <a id="con_HyperLink17" tabindex="20" title="雪霸路線查詢" href="bed_10.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;雪霸路線查詢</a>
+                            <a id="con_hlBed_6" tabindex="20" title="玉山宿營地查詢" href="bed_6.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;玉山宿營地查詢</a>
+                            <a id="A5" tabindex="20" title="玉山單日往返路線查詢" href="bed_7.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;玉山單日往返路線查詢</a>
+                            <a id="con_hlBed_3" tabindex="22" title="玉山抽籤結果查詢" href="bed_3.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;玉山抽籤結果查詢</a>
+                            <a id="A7" tabindex="20" title="玉山抽籤日期" href="bed_8.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;玉山抽籤日期查詢</a>
+                            <a id="con_hlBed_9" tabindex="20" title="玉山可申請退費日期查詢" href="bed_9.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;玉山可申請退費日期查詢</a>
+                            <a id="con_HyperLink66" tabindex="20" title="林業及自然保育署區域申請及抽籤查詢" href="bed_11.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;林業及自然保育署區域申請及抽籤查詢</a>
+                            <a href="#" class="close_up btn btn-sm btn-block btn-light"><i class="fas fa-chevron-up"></i></a>
+                        </span>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink19" tabindex="23" title="旅遊登山資訊" href="#">旅遊登山資訊</a>
+                        <span class="menu_list">
+                            <a id="con_HyperLink40" tabindex="35" title="登山路線圖資查詢" href="web_map2.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;登山路線圖資查詢</a>
+                            <a id="con_HyperLink22" tabindex="26" title="登山路線介紹" href="information_1.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;登山路線介紹</a>
+                            <a id="A4" tabindex="24" title="景點資訊" href="information_place.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;景點資訊</a>
+                            <a id="con_HyperLink20" tabindex="24" title="各縣市天氣預報" href="information_2.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;各縣市天氣預報</a>
+                            <a id="con_HyperLink21" tabindex="25" title="國家公園天氣資訊" href="information_3.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;國家公園天氣資訊</a>
+                            <a id="con_HyperLink23" tabindex="27" title="即時影像觀看" href="information_4.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;即時影像觀看</a>
+                            <a id="A10" tabindex="27" title="國家公園步道分級" href="information_6.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;國家公園步道分級</a>
+                            
+                            <a id="A12" tabindex="28" title="雙語詞彙" href="information_8.aspx"><i class="fas fa-caret-right fa-xs"></i>&nbsp;雙語詞彙</a>
+                            <a href="#" class="close_up btn btn-sm btn-block btn-light"><i class="fas fa-chevron-up"></i></a>
+                        </span>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink399" tabindex="34" title="本站使用說明" href="web_illustrate.aspx">本站使用說明</a>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink499" tabindex="35" title="警特報" target="_blank" rel='noopener noreferrer' href="https://www.cwa.gov.tw/V8/C/P/Warning/FIFOWS.html">警特報</a>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink501" tabindex="37" title="網站導覽" href="site_map.aspx">網站導覽</a>
+                    </div>
+                    <div class="menu_group">
+                        <a class="m_menu_btn" id="con_HyperLink500" tabindex="36" title="RSS" target="_blank" rel='noopener noreferrer' href="RssWeb.aspx">RSS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <div class="index_con_box">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light">
+                <li class="breadcrumb-item"><a href="web_index.aspx" rel="noopener noreferrer"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="apply_1.aspx" rel="noopener noreferrer">登山申請</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="apply_1.aspx" rel="noopener noreferrer">登山線上申請</a></li>
+            </ol>
+        </nav>
+        <h2 class="con_title">
+            <span class="pull-right">
+                <a href="https://www.youtube.com/playlist?list=PL8CdSPNjegIZKIN75OXLB9uk_4eQmgsAm" target="_blank" rel="noopener noreferrer" class="btn btn-info mb-1">
+                    <i class="fas fa-video"></i>&nbsp;國家公園登山安全
+                </a>
+                <a href="apply_teach.aspx" target="_blank" rel="noopener noreferrer" class="btn btn-info mb-1">
+                    <i class="fas fa-chalkboard-teacher"></i>&nbsp;線上申請教學
+                </a>
+            </span>
+            登山線上申請
+        </h2>
+        <div class="container-fluid">
+            <div id="con_f_div" class="card card_main">
+                <div class="card-header">登山路線選擇</div>
+                <div class="card-body">
+                    <div id="con_UpdatePanel1">
+	
+                             <div class="row mb-2" >
+                                <label class="col-md-3 control_label">關鍵字查詢</label>
+                                <div class="col-md-6 multi_s">
+                                    <input name="ctl00$con$txLine" type="text" id="con_txLine" class="form-control" placeholder="全部路線" />
+                                </div>
+                                <div class="col-md-3">
+                                    <a id="con_btnselect" class="btn btn-main btn-block" href="javascript:__doPostBack(&#39;ctl00$con$btnselect&#39;,&#39;&#39;)"><i class="fas fa-search"></i>&nbsp;查詢</a>
+                                </div>
+                                <div style="display: none">
+                                    <select name="ctl00$con$line" id="con_line" class="form-control multiple_kw">
+		<option value="">全部路線</option>
+		<option value="150">屏風山線</option>
+		<option value="153">(4級) 中雪山、大雪山</option>
+		<option value="155">(2級) 馬達拉溪登山口宿營地</option>
+		<option value="156">(4級) 秀霸線</option>
+		<option value="1">乙女瀑布單日往返</option>
+		<option value="2">2~5天(塔塔加 - 玉山線 - 塔塔加)</option>
+		<option value="3">玉山前峰單日往返</option>
+		<option value="4">玉山線單日往返</option>
+		<option value="5">2~3天(進涇橋/南一段 - 庫哈諾辛山/關山 - 進涇橋/南一段)</option>
+		<option value="24">奇萊東稜</option>
+		<option value="25">奇萊南峰</option>
+		<option value="34">羊頭山單攻</option>
+		<option value="57">4~6天(東埔- 秀姑巒 – 東埔)</option>
+		<option value="61">1~9天(向陽/南安 – 新康橫斷線 – 南安/向陽)</option>
+		<option value="62">2天(塔塔加 - 玉山線 - 塔塔加)(外籍提前)</option>
+		<option value="89">2~9天(向陽/東埔 - 南二段 – 東埔/向陽)</option>
+		<option value="90">2~9天(東埔/玉里林道–馬博拉斯橫斷–東埔/玉里林道)</option>
+		<option value="97">(3級)  七卡、雪山東峰單日往返</option>
+		<option value="98">(3級)  七卡、雪山東峰</option>
+		<option value="99">(3級) 雪山主峰(多日行程)</option>
+		<option value="100">(4級) 雪山主峰(單日往返)</option>
+		<option value="102">(4級) 雪山北峰、翠池</option>
+		<option value="103">雪地訓練申請案</option>
+		<option value="104">(3級) 志佳陽大山</option>
+		<option value="105">(4級) 志佳陽-雪山線</option>
+		<option value="106">(5級) 志佳陽-雪山北峰線</option>
+		<option value="107">(3級) 推論山單日往返</option>
+		<option value="108">(4級) 大劍線</option>
+		<option value="118">(4級) 大霸線</option>
+		<option value="119">(5級) 大霸線(首日住宿中霸山屋)</option>
+		<option value="120">(5級) 大霸北稜線</option>
+		<option value="121">(5級) 聖稜線I型</option>
+		<option value="122">(5級) 聖稜線O型</option>
+		<option value="123">(5級) 聖稜線Y型</option>
+		<option value="124">(6級) 其他路線</option>
+		<option value="609">苗栗三義火炎山自然保留區</option>
+		<option value="610">淡水河紅樹林自然保留區</option>
+		<option value="611">坪林台灣油杉自然保留區</option>
+		<option value="612">烏石鼻海岸自然保留區</option>
+		<option value="613">南澳闊葉樹林自然保留區</option>
+		<option value="614">九九峰自然保留區</option>
+		<option value="615">臺灣一葉蘭自然保留區</option>
+		<option value="626">海岸山脈臺東蘇鐵自然保護區</option>
+		<option value="627">翡翠水庫食蛇龜野生動物保護區</option>
+		<option value="628">玉里野生動物保護區</option>
+		<option value="629">插天山自然保留區 - 福巴越嶺步道</option>
+		<option value="630">插天山自然保留區 - 北插天山步道及其支線</option>
+		<option value="631">插天山自然保留區 - 除北插天山步道及福巴越嶺步道外其他路線</option>
+		<option value="632">鴛鴦湖自然保留區</option>
+		<option value="157">入山證申請</option>
+		<option value="158">向陽山屋</option>
+		<option value="159">嘉明湖山屋/營地</option>
+		<option value="160">檜谷山莊/營地</option>
+		<option value="161">天池山莊/營地</option>
+		<option value="125">(5級) 雪山西稜線</option>
+		<option value="128">1~15天(其他路線)</option>
+		<option value="130">3~5天其他路線(東埔/塔塔加 - 八通關玉山線 - 塔塔加/東埔)</option>
+		<option value="131">4~9天其他路線(南安/東埔 - 八通關越嶺線 – 東埔/南安)</option>
+		<option value="27">南湖中央尖 (北一段線)</option>
+		<option value="28">北一段縱走北二段</option>
+		<option value="29">北二段（鬼門關斷崖）</option>
+		<option value="30">閂山鈴鳴山</option>
+		<option value="31">閂山單攻</option>
+		<option value="32">畢祿縱走羊頭</option>
+		<option value="33">畢祿山</option>
+		<option value="6">2~3天 (南安 - 瓦拉米 - 南安)</option>
+		<option value="7">瓦拉米單日往返</option>
+		<option value="10">2~3天(東埔 –八通關 – 東埔)</option>
+		<option value="81">庫哈諾辛山/關山單日往返</option>
+		<option value="109">北一段縱走北二段(南往北)</option>
+		<option value="110">(5級) 大小劍線</option>
+		<option value="111">(5級) 雪劍線</option>
+		<option value="112">(3級) 武陵一秀或二秀 (桃山、池有山) 單日往返</option>
+		<option value="113">(3級) 武陵三秀 (不包含品田山)</option>
+		<option value="114">(4級) 喀拉業山單日長程往返</option>
+		<option value="115">(4級) 品田山單日長程往返</option>
+		<option value="116">(4級) 武陵四秀線</option>
+		<option value="51">3~8天(南安 - 八通關越嶺線東段 - 南安)</option>
+		<option value="55">其他（非傳統路線但進入區域屬生態保護區）</option>
+		<option value="616">出雲山自然保留區</option>
+		<option value="617">大武山自然保留區</option>
+		<option value="618">大武事業區台灣穗花杉自然保留區</option>
+		<option value="619">台東紅葉村台東蘇鐵自然保留區</option>
+		<option value="620">挖子尾自然保留區</option>
+		<option value="622">甲仙四德化石自然保護區</option>
+		<option value="623">十八羅漢山自然保護區</option>
+		<option value="624">關山臺灣海棗自然保護區</option>
+		<option value="625">大武臺灣油杉自然保護區</option>
+		<option value="661">其他路線_南湖大山線</option>
+		<option value="662">其他路線_奇萊群峰</option>
+		<option value="665">奇萊主、北峰線</option>
+		<option value="666">奇萊連峰</option>
+		<option value="667">南湖大山線(因承載量異動，入園日期為114.7.1以後者適用)</option>
+		<option value="675">奇萊北屏風山線</option>
+
+	</select>
+                                    <input type="submit" name="ctl00$con$lineclick" value="隱藏查詢路線" id="lineclick" />
+                                    <input type="submit" name="ctl00$con$btnselectClick" value="查詢路線" id="btnselectClick" />
+                                </div>
+                            </div>
+
+                            
+
+                        
+</div>
+                    <div id="con_f_div2" class="row mb-2">
+                        <label class="col-md-3 control_label">以分類查詢</label>
+                        <div class="col-md-9 btn_unit">
+                            <button id="org" name="org" type="button" class="btn btn-outline-secondary active" onclick="setorg('0')">全部</button>&nbsp;
+					        <button type="button" id="org105e956f-d8da-49f7-a9b7-3aefdda88a12" class="btn btn-outline-secondary" onclick="setorg('105e956f-d8da-49f7-a9b7-3aefdda88a12')">太魯閣國家公園管理處</button>&nbsp;<button type="button" id="orge6dd4652-2d37-4346-8f5d-6e538353e0c2" class="btn btn-outline-secondary" onclick="setorg('e6dd4652-2d37-4346-8f5d-6e538353e0c2')">雪霸國家公園管理處</button>&nbsp;<button type="button" id="orgc951cdcd-b75a-46b9-8002-8ef952ec95fd" class="btn btn-outline-secondary" onclick="setorg('c951cdcd-b75a-46b9-8002-8ef952ec95fd')">玉山國家公園管理處</button>&nbsp;<button type="button" id="org8f7c09dc-afeb-4708-a7bb-b20da2a24648" class="btn btn-outline-secondary" onclick="setorg('8f7c09dc-afeb-4708-a7bb-b20da2a24648')">警政署入山</button>&nbsp;<button type="button" id="org7D0ED03D-E3FF-4482-8254-96F6434F5A85" class="btn btn-outline-secondary" onclick="setorg('7D0ED03D-E3FF-4482-8254-96F6434F5A85')">林業及自然保育署自然保護區域</button>&nbsp;<button type="button" id="org84BC7D2B-AD3E-4F39-B568-A96681087F74" class="btn btn-outline-secondary" onclick="setorg('84BC7D2B-AD3E-4F39-B568-A96681087F74')">林業及自然保育署自然步道山屋</button>&nbsp;
+                            <input type="hidden" name="ctl00$con$hidorgid" id="hidorgid" value="0" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="block_title">推薦的路線/步道<a name="TopTiltes "></a></div>
+            <input type="hidden" name="ctl00$con$hidmtotal" id="con_hidmtotal" />
+            <div id="con_UpdatePanel2">
+	
+                    
+                    
+                    <div class="res_box2">
+                        <div class="row">
+                            <div class="col-md-24" style="text-align: center;">尚無資料</div>
+                        </div>
+                    </div>
+                    
+</div>
+        </div>
+    </div>
+
+        <div class="web_footer  con_web_bg p-3">
+            <div class="container-fluid">
+               <div class="row gutters_s">
+                    <div class="col-md-12 col-xl-2 mb-1">
+                        <span>Copyright © 內政部國家公園署 著作權所有</span>
+                        <span>建議瀏覽解析度：1440 x 960 以上</span>
+                        <span>並符合【Safari 、Edge、Chrome】</span>
+                    </div>
+                    <div class="col-md-2 col-xl-1 mb-1">
+                        <a id="hlNews7" class="btn btn-info btn-block" href="news_7.aspx"><i class="far fa-comments fa-2x w-100"></i>常見問答</a>&nbsp;
+                    </div>
+                   <div class="col-md-2 col-xl-1 mb-1">
+                        <a id="hlMail" class="btn btn-info btn-block" href="mail.aspx"><i class="far fa-envelope fa-2x w-100"></i>聯絡我們</a>&nbsp;
+                    </div>
+                   <div class="col-md-2 col-xl-1 mb-1">
+                        <a id="HyperLink1" class="btn btn-info btn-block" href="privacy.aspx"><i class="fa fa-user-secret fa-2x w-100"></i>隱私權宣告</a>&nbsp;
+                    </div>
+                  <div class="col-md-3 col-xl-1 mb-1">
+                        <a id="HyperLink2" class="btn btn-info btn-block" href="security.aspx"><i class="fas fa-shield-alt fa-2x w-100"></i>資訊安全政策</a>
+                    </div>
+                    <div class="col-md-3 col-xl-1 mb-1">
+                        <a id="HyperLink3" class="btn btn-info btn-block" href="OpenData.aspx"><i class="fas fa-landmark fa-2x w-100"></i>資料開放宣告</a>
+                    </div>
+                   	<div class="col-md-12 col-xl-5 mb-1">
+                        <span>更新日期：2026/05/21</span>
+                        <span>「臺灣登山申請一站式服務網」乃整合國家公園署之玉山、雪霸、太魯閣國家公園登山申請、林業及自然保育署之天池、嘉明湖、向陽、檜谷山屋營地及自然保護(留)區、野生動物保護區、警政署入山申請等服務，本站提供統一申請入口，再由各機關個別審核，如有申請相關問題，歡迎透過<a href="mail.aspx">聯絡我們</a>向指定機關連繫，謝謝。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" id="f_search" data-toggle="modal" data-target="#search_modal"><i class="fas fa-search"></i><br />快捷選單</a>
+        <a href="#" id="gotop">
+            <i class="fas fa-angle-up text-white"></i><br>Top
+        </a>
+          <div class="modal" id="search_modal" role="dialog" aria-labelledby="search_modal" aria-modal="true">
+  <div class="modal-dialog modal-xxl" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4>依據登山經驗建議參考資料</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">×</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="info_list_box">
+				<div class="info_list_block">
+					<div class="info_list_t info_list_t1">學習登山者<br /><small>獲取登山知識</small></div>
+					<div class="info_list_c">
+						<ul>
+							<li>登山安全影片
+								<ul>
+									<li><a  href="https://www.youtube.com/watch?v=HgnaQaKFjNo" target="_blank" rel='noopener noreferrer'>登山安全防護原則</a></li>
+									<li><a href="https://www.youtube.com/watch?v=OrVgsQFbuOs" target="_blank" rel='noopener noreferrer'>國家公園步道分級</a></li>
+									<li><a href="https://www.youtube.com/watch?v=syBRav_eZAA" target="_blank" rel='noopener noreferrer'>登山必要裝備</a></li>
+									<li><a href="https://www.youtube.com/watch?v=vvkmAks0fD8" target="_blank" rel='noopener noreferrer'>登山留守制度</a></li>
+									<li><a href="https://www.youtube.com/watch?v=e4_GSy6vdYI" target="_blank" rel='noopener noreferrer'>高山症處理與預防</a></li>
+								</ul>
+							</li>
+							<li><a href="information_place.aspx" target="_blank" rel='noopener noreferrer'>路線及景點介紹</a></li>
+							<li><a href="web_illustrate.aspx" target="_blank" rel='noopener noreferrer'>如何申請入山/入園許可證</a></li>
+                            <li><a href="MountainDashboard.aspx"  rel='noopener noreferrer'>山域事故儀表板</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="info_list_block">
+					<div class="info_list_t info_list_t2">規劃登山者<br /><small>查詢登山資料</small></div>
+					<div class="info_list_c">
+						<ul>
+							<li><a href="web_map2.aspx" target="_blank" rel='noopener noreferrer'>登山路線圖資查詢</a></li>
+							<li><a href="notice.aspx" target="_blank" rel='noopener noreferrer'>各機關登山申辦須知</a></li>
+							<li><a href="open.aspx" target="_blank" rel='noopener noreferrer'>可申請路線查詢</a></li>
+							<li><a href="bed_7.aspx" target="_blank" rel='noopener noreferrer'>單日往返可申請數量</a></li>
+							<li><a href="bed_0.aspx" target="_blank" rel='noopener noreferrer'>宿營地及山屋可申請數量</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="info_list_block">
+					<div class="info_list_t info_list_t3">申請登山者<br /><small>申請/修改資料</small></div>
+					<div class="info_list_c">
+						<ul>
+							<li><a href="apply_1.aspx" target="_blank" rel='noopener noreferrer'>線上申請</a></li>
+							<li><a href="apply_2_1.aspx" target="_blank" rel='noopener noreferrer'>草稿編輯</a></li>
+							<li><a href="apply_3.aspx" target="_blank" rel='noopener noreferrer'>申請進度查詢</a></li>
+							<li><a href="apply_2.aspx" target="_blank" rel='noopener noreferrer'>申請資料異動</a></li>
+							<li><a href="apply_4.aspx" target="_blank" rel='noopener noreferrer'>繳費/退費(含退費日期)查詢</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="info_list_block">
+					<div class="info_list_t info_list_t4">前往學習者<br /><small>必要整備</small></div>
+					<div class="info_list_c">
+						<ul>
+							<li><a href="open.aspx" target="_blank" rel='noopener noreferrer'>路線開放狀態查詢</a></li>
+							<li><a href="information_3.aspx" target="_blank" rel='noopener noreferrer'>天候狀況查詢</a></li>
+							<li><a href="https://www.youtube.com/playlist?list=PL8CdSPNjegIZKIN75OXLB9uk_4eQmgsAm" target="_blank" rel='noopener noreferrer'>登山教育影片</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="info_list_block">
+					<div class="info_list_t info_list_t5">完成登山者<br /><small>下山回報</small></div>
+					<div class="info_list_c">
+						<ul>
+							<li><a href="apply_6.aspx" target="_blank" rel='noopener noreferrer'>出園回報</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  </div>
+</div>
+    
+
+<script type="text/javascript">
+//<![CDATA[
+cssreset();$('#con_HyperLink24,#con_HyperLink25').addClass('active');//]]>
+</script>
+</form>
+    <form id="CardForm" hidden></form>
+    <style>
+        /*--語言切換區塊--*/
+        .goog-te-gadget-simple {
+            padding: 0.3em;
+            border: 1px solid #814794;
+            border-radius: 0.2rem;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script src="js/google-googletagmanager.js?id=G-WX36SLM6TL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-WX36SLM6TL');
+    </script>
+
+</body>
+</html>
+

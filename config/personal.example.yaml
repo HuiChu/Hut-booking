@@ -1,0 +1,56 @@
+# 個資範本 — 複製成 config/personal.yaml（已 gitignore）後填入真實資料
+# 真實 hike.taiwan.gov.tw 申請表每位人員需要的欄位較多，以下全是「填表所需」。
+# 不確定的欄位（國籍 UUID / city code）等 Phase 1 recon 進一步確認，先空著即可。
+
+leader:
+  name: 王小明
+  id_number: A123456789       # 身分證字號
+  phone: 0912345678           # 手機 10 碼（mobile）
+  birthday: 1990-01-01
+  sex: M                       # M / F；待 recon 確認真實值
+  email: leader@example.com
+  addr: 台北市信義區信義路一段1號
+  tel: 0227201234              # 市話（可空）
+  fax: ""
+  nation: ""                   # 國籍 UUID（中華民國 = ?，待 recon）
+  country_code: "TW"           # ddlcountry 值
+  city_code: ""                # ddlcity 值
+  contact_name: 王太太         # 緊急聯絡人
+  contact_tel: 0987654321
+
+members:
+  alice:
+    name: 林小華
+    id_number: B223456789
+    phone: 0922334455
+    birthday: 1991-03-12
+    sex: F
+    email: alice@example.com
+    addr: 台北市中山區
+    contact_name: 林父
+    contact_tel: 0911223344
+
+  bob:
+    name: 陳大強
+    id_number: C123456789
+    phone: 0933445566
+    birthday: 1988-08-08
+    sex: M
+    email: bob@example.com
+    addr: 新北市板橋區
+    contact_name: 陳母
+    contact_tel: 0955667788
+
+# 留守人（不能是領隊也不能是隊員）
+stay:
+  name: 張安安
+  id_number: D123456789
+  phone: 0966778899
+  birthday: 1992-05-05
+  sex: F
+  email: stay@example.com
+  addr: 桃園市中壢區
+
+# 申請人（可省略；省略時 = 領隊 + 自動 copyapply）
+# applicant:
+#   name: ...

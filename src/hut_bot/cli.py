@@ -2,9 +2,15 @@ from __future__ import annotations
 
 import asyncio
 import json
+import sys
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import typer
+
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
 
 from .auth.playwright_login import interactive_login
 from .config import Settings, load_settings
@@ -14,6 +20,11 @@ from .grabber.viewstate import parse_all_hidden_inputs, parse_viewstate
 from .logging_setup import setup_logging
 from .routes.base import BookingParams, Member
 from .routes.catalog import get_handler, list_routes
+from .routes.discovery import discover_routes, write_routes_yaml
+from .spec import BookingSpec, load_bookings, load_personal
+
+DEFAULT_PERSONAL_PATH = Path("config/personal.yaml")
+DEFAULT_BOOKINGS_PATH = Path("config/bookings.yaml")
 
 app = typer.Typer(add_completion=False, help="Taiwan hut booking bot CLI")
 
@@ -34,7 +45,7 @@ def login() -> None:
 
 CANDIDATE_RECON_URLS: dict[str, str] = {
     "home": "https://hike.taiwan.gov.tw/",
-    "apply_1": "https://hike.taiwan.gov.tw/apply_1.aspx?search=2",
+    "apply_1": "https://hike.taiwan.gov.tw/apply_1.aspx",
     "applySearch": "https://hike.taiwan.gov.tw/applySearch.aspx",
     "apply_3": "https://hike.taiwan.gov.tw/apply_3.aspx",
     "bed_0": "https://hike.taiwan.gov.tw/bed_0.aspx",
@@ -156,6 +167,29 @@ def _build_params_from_settings(
     )
 
 
+def _resolve_booking(
+    name: str,
+    personal_path: Path = DEFAULT_PERSONAL_PATH,
+    bookings_path: Path = DEFAULT_BOOKINGS_PATH,
+) -> tuple[BookingSpec, BookingParams]:
+    if not personal_path.exists():
+        raise typer.BadParameter(
+            f"找不到 {personal_path}。先 cp config/personal.example.yaml {personal_path} 並填入個資。"
+        )
+    if not bookings_path.exists():
+        raise typer.BadParameter(
+            f"找不到 {bookings_path}。先 cp config/bookings.example.yaml {bookings_path} 並填入需求。"
+        )
+    db = load_personal(personal_path)
+    specs = load_bookings(bookings_path)
+    if name not in specs:
+        raise typer.BadParameter(
+            f"找不到 booking={name!r}。已定義：{sorted(specs)}"
+        )
+    spec = specs[name]
+    return spec, spec.to_booking_params(db)
+
+
 @app.command("list-routes")
 def list_routes_cmd() -> None:
     """列出 catalog 已註冊的路線 ID。"""
@@ -163,18 +197,70 @@ def list_routes_cmd() -> None:
         typer.echo(route_id)
 
 
+@app.command("list-bookings")
+def list_bookings_cmd(
+    bookings_path: Path = typer.Option(DEFAULT_BOOKINGS_PATH, "--bookings"),
+) -> None:
+    """列出 config/bookings.yaml 內所有 booking spec。"""
+    if not bookings_path.exists():
+        typer.echo(f"{bookings_path} 不存在；複製 config/bookings.example.yaml 開始。")
+        raise typer.Exit(code=1)
+    specs = load_bookings(bookings_path)
+    typer.echo(f"{'name':<32} {'route':<28} {'start_date':<12} nights members")
+    typer.echo("-" * 90)
+    for s in specs.values():
+        typer.echo(
+            f"{s.name:<32} {s.route:<28} {s.start_date.isoformat():<12} "
+            f"{s.nights:<6} {','.join(s.members) or '-'}"
+        )
+
+
+@app.command()
+def discover(
+    out: Path = typer.Option(
+        Path("config/routes.yaml"), "--out", "-o", help="輸出 YAML 路徑"
+    ),
+) -> None:
+    """從 apply_1.aspx 抓所有路線（公開頁，不需登入）並寫入 config/routes.yaml。"""
+    settings = load_settings()
+    log = setup_logging(settings.log_level, settings.logs_dir)
+
+    async def run() -> None:
+        async with build_client(settings.auth_state_path) as client:
+            routes = await discover_routes(client)
+            write_routes_yaml(routes, out)
+            log.info("discover.complete", count=len(routes), out=str(out))
+            typer.echo(f"已寫入 {len(routes)} 條路線到 {out}\n")
+            typer.echo(f"{'code':>5}  {'difficulty':<6}  display_name")
+            typer.echo("-" * 70)
+            for r in routes[:15]:
+                typer.echo(f"{r.code:>5}  {(r.difficulty or '-'):<6}  {r.display_name}")
+            if len(routes) > 15:
+                typer.echo(f"... 還有 {len(routes) - 15} 條，詳見 {out}")
+
+    asyncio.run(run())
+
+
 @app.command("dry-run")
 def dry_run(
-    route: str = typer.Option(..., "--route", "-r"),
-    start_date: datetime = typer.Option(..., "--start-date"),
+    booking: str | None = typer.Option(None, "--booking", "-b", help="從 config/bookings.yaml 取 spec"),
+    route: str | None = typer.Option(None, "--route", "-r"),
+    start_date: datetime | None = typer.Option(None, "--start-date"),
     nights: int = typer.Option(1, "--nights"),
     people: int = typer.Option(1, "--people"),
 ) -> None:
-    """完整跑 GET → 組 payload → 印出但不真的 POST。"""
+    """完整跑 GET → 組 payload → 印出但不真的 POST。用 --booking 或 --route+--start-date。"""
     settings = load_settings()
     log = setup_logging(settings.log_level, settings.logs_dir)
+
+    if booking:
+        spec, params = _resolve_booking(booking)
+        route = spec.route
+    else:
+        if not route or not start_date:
+            raise typer.BadParameter("需要 --booking 或同時提供 --route 與 --start-date")
+        params = _build_params_from_settings(settings, start_date, nights, people)
     handler = get_handler(route)
-    params = _build_params_from_settings(settings, start_date, nights, people)
 
     async def run() -> None:
         async with build_client(settings.auth_state_path) as client:
@@ -192,8 +278,9 @@ def dry_run(
 
 @app.command()
 def grab(
-    route: str = typer.Option(..., "--route", "-r"),
-    start_date: datetime = typer.Option(..., "--start-date"),
+    booking: str | None = typer.Option(None, "--booking", "-b"),
+    route: str | None = typer.Option(None, "--route", "-r"),
+    start_date: datetime | None = typer.Option(None, "--start-date"),
     nights: int = typer.Option(1, "--nights"),
     people: int = typer.Option(1, "--people"),
     deadline_minutes: int = typer.Option(
@@ -204,8 +291,15 @@ def grab(
     """立即搶（debug 用）。會在 deadline_minutes 內持續重試直到成功。"""
     settings = load_settings()
     log = setup_logging(settings.log_level, settings.logs_dir)
+
+    if booking:
+        spec, params = _resolve_booking(booking)
+        route = spec.route
+    else:
+        if not route or not start_date:
+            raise typer.BadParameter("需要 --booking 或同時提供 --route 與 --start-date")
+        params = _build_params_from_settings(settings, start_date, nights, people)
     handler = get_handler(route)
-    params = _build_params_from_settings(settings, start_date, nights, people)
     deadline = datetime.now() + timedelta(minutes=deadline_minutes)
 
     async def run() -> None:
@@ -241,8 +335,9 @@ def grab(
 
 @app.command()
 def schedule(
-    route: str = typer.Option(..., "--route", "-r"),
-    start_date: datetime = typer.Option(..., "--start-date"),
+    booking: str | None = typer.Option(None, "--booking", "-b"),
+    route: str | None = typer.Option(None, "--route", "-r"),
+    start_date: datetime | None = typer.Option(None, "--start-date"),
     nights: int = typer.Option(1, "--nights"),
     people: int = typer.Option(1, "--people"),
     open_hour: int = typer.Option(7, "--open-hour"),
@@ -256,8 +351,18 @@ def schedule(
 
     settings = load_settings()
     log = setup_logging(settings.log_level, settings.logs_dir)
+
+    if booking:
+        spec, params = _resolve_booking(booking)
+        route = spec.route
+        open_hour = spec.open_time.hour
+        open_minute = spec.open_time.minute
+        open_second = spec.open_time.second
+    else:
+        if not route or not start_date:
+            raise typer.BadParameter("需要 --booking 或同時提供 --route 與 --start-date")
+        params = _build_params_from_settings(settings, start_date, nights, people)
     get_handler(route)  # validate route_id before scheduling
-    params = _build_params_from_settings(settings, start_date, nights, people)
 
     if once:
         target = _next_open_time(open_hour, open_minute, open_second)

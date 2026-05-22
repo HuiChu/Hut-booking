@@ -1,0 +1,41 @@
+# Booking 需求範本 — 複製成 config/bookings.yaml（已 gitignore）後填入
+# route 對應 config/routes.yaml 內的 route_id
+# 還需要 destination 資訊（unit/cid/fid）— 暫時等 routes_destinations.yaml 補
+
+bookings:
+  - name: shoba-2026-06
+    route: 秀霸線               # routes.yaml 的 route_id
+    start_date: 2026-06-15
+    nights: 1
+    members: [alice, bob]
+    open_time: "07:00:00"
+    team_name: 王小明隊
+    seminar: ""                # 研習證明（如有）
+    satellite_phone: ""
+    radio_frequency: ""
+    note: ""
+    day_beds:
+      - day_index: 1
+        num: 3
+        bedok: true
+        bakroomok: true
+        rooms: 1
+      - day_index: 2
+        num: 3
+        bedok: true
+        bakroomok: true
+        rooms: 1
+
+  - name: yushan-2026-07
+    route: 玉山前峰單日往返
+    start_date: 2026-07-01
+    nights: 1
+    members: [alice]
+    open_time: "07:00:00"
+    team_name: 王小明隊
+    day_beds:
+      - day_index: 1
+        num: 2
+        bedok: true
+        bakroomok: true
+        rooms: 1

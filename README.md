@@ -21,33 +21,39 @@ Playwright 互動登入             →   APScheduler + NTP 校時   →   解�
                                →   POST 送出
 ```
 
-## 安裝
+## 安裝（使用 uv）
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-playwright install chromium
-cp .env.example .env  # 填入帳密與領隊資料
+需先安裝 [uv](https://docs.astral.sh/uv/)（`winget install astral-sh.uv` 或 `pip install uv`）。
+
+```powershell
+uv sync --extra dev               # 依 pyproject.toml + uv.lock 建 .venv 並裝 deps（含 dev）
+uv run playwright install chromium # 下載 Chromium
+Copy-Item .env.example .env       # 填入帳密與領隊資料
 ```
+
+`.python-version` 已固定為 3.11；uv 會自動找到對應的解譯器（沒裝會自動下載）。
 
 ## 使用
 
-```bash
-# 1. 互動登入（會開瀏覽器，手動完成 CAPTCHA / OTP）
-hut-bot login
+所有指令都用 `uv run` 前綴（或先 `.\.venv\Scripts\Activate.ps1` 啟動 venv 再直接 `hut-bot ...`）。
 
-# 2. Phase 1 必經：對指定路線抓表單頁、印出所有 form fields、存 HTML
-hut-bot recon --route <route_id>
+```powershell
+# 1. 互動登入（會開瀏覽器，手動完成 CAPTCHA / OTP）
+uv run hut-bot login
+
+# 2. Phase 1 必經：抓 apply_1 / applySearch / apply_3 / bed_0 等候選頁
+uv run hut-bot recon-batch
+# 或單抓一頁
+uv run hut-bot recon --url https://hike.taiwan.gov.tw/apply_1.aspx --name apply_1
 
 # 3. Dry-run：完整跑 GET → 組 payload → 印出但不送
-hut-bot dry-run --route <route_id> --start-date 2026-06-01 --nights 1 --people 4
+uv run hut-bot dry-run --route <route_id> --start-date 2026-06-01 --nights 1 --people 4
 
 # 4. 立即搶（debug 用，不等 07:00）
-hut-bot grab --route <route_id> --start-date 2026-06-01 --nights 1 --people 4
+uv run hut-bot grab --route <route_id> --start-date 2026-06-01 --nights 1 --people 4
 
 # 5. 排程：常駐進程，每天 06:59:50 預熱 → 07:00:00.000 觸發 → 重試到 07:01:00
-hut-bot schedule --route <route_id> --start-date 2026-06-01 --nights 1 --people 4
+uv run hut-bot schedule --route <route_id> --start-date 2026-06-01 --nights 1 --people 4
 ```
 
 ## 開發狀態
@@ -64,9 +70,9 @@ hut-bot schedule --route <route_id> --start-date 2026-06-01 --nights 1 --people 
 
 我（Claude）無法操作瀏覽器互動登入，且 hike.taiwan.gov.tw 真實欄位名是 agent 推測值。請執行：
 
-```bash
-hut-bot login         # 開瀏覽器手動登入，匯出 storage/auth_state.json
-hut-bot recon-batch   # 抓所有候選 URL 存到 storage/form_fixtures/
+```powershell
+uv run hut-bot login         # 開瀏覽器手動登入，匯出 storage/auth_state.json
+uv run hut-bot recon-batch   # 抓所有候選 URL 存到 storage/form_fixtures/
 ```
 
 然後依 `docs/recon-checklist.md` 核對 `src/hut_bot/routes/hike_aspnet.py` 與 `routes/catalog.py` 中所有標 `# RECON_TODO:` 的位置，覆蓋為真實欄位名／URL／按鈕值。

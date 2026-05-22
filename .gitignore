@@ -8,6 +8,15 @@ storage/form_fixtures/*.json
 !storage/form_fixtures/synthetic_*.html
 logs/
 
+# personal data — DO NOT commit, contains 身分證 / 電話
+config/personal.yaml
+config/bookings.yaml
+# user-local destination overrides (the .example version is committed as starter)
+config/routes_destinations.yaml
+
+# HAR captures — contain cookies, IDs, phones. NEVER commit.
+storage/recon/
+
 # python
 __pycache__/
 *.py[cod]

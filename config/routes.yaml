@@ -1,0 +1,379 @@
+source_url: https://hike.taiwan.gov.tw/apply_1.aspx
+route_count: 94
+routes:
+- code: '150'
+  display_name: 屏風山線
+  route_id: 屏風山線
+  difficulty: null
+- code: '153'
+  display_name: (4級) 中雪山、大雪山
+  route_id: 中雪山-大雪山
+  difficulty: 4級
+- code: '155'
+  display_name: (2級) 馬達拉溪登山口宿營地
+  route_id: 馬達拉溪登山口宿營地
+  difficulty: 2級
+- code: '156'
+  display_name: (4級) 秀霸線
+  route_id: 秀霸線
+  difficulty: 4級
+- code: '1'
+  display_name: 乙女瀑布單日往返
+  route_id: 乙女瀑布單日往返
+  difficulty: null
+- code: '2'
+  display_name: 2~5天(塔塔加 - 玉山線 - 塔塔加)
+  route_id: 2-5天-塔塔加-玉山線-塔塔加
+  difficulty: null
+- code: '3'
+  display_name: 玉山前峰單日往返
+  route_id: 玉山前峰單日往返
+  difficulty: null
+- code: '4'
+  display_name: 玉山線單日往返
+  route_id: 玉山線單日往返
+  difficulty: null
+- code: '5'
+  display_name: 2~3天(進涇橋/南一段 - 庫哈諾辛山/關山 - 進涇橋/南一段)
+  route_id: 2-3天-進涇橋-南一段-庫哈諾辛山-關山-進涇橋-南一段
+  difficulty: null
+- code: '24'
+  display_name: 奇萊東稜
+  route_id: 奇萊東稜
+  difficulty: null
+- code: '25'
+  display_name: 奇萊南峰
+  route_id: 奇萊南峰
+  difficulty: null
+- code: '34'
+  display_name: 羊頭山單攻
+  route_id: 羊頭山單攻
+  difficulty: null
+- code: '57'
+  display_name: 4~6天(東埔- 秀姑巒 – 東埔)
+  route_id: 4-6天-東埔-秀姑巒-東埔
+  difficulty: null
+- code: '61'
+  display_name: 1~9天(向陽/南安 – 新康橫斷線 – 南安/向陽)
+  route_id: 1-9天-向陽-南安-新康橫斷線-南安-向陽
+  difficulty: null
+- code: '62'
+  display_name: 2天(塔塔加 - 玉山線 - 塔塔加)(外籍提前)
+  route_id: 2天-塔塔加-玉山線-塔塔加-外籍提前
+  difficulty: null
+- code: '89'
+  display_name: 2~9天(向陽/東埔 - 南二段 – 東埔/向陽)
+  route_id: 2-9天-向陽-東埔-南二段-東埔-向陽
+  difficulty: null
+- code: '90'
+  display_name: 2~9天(東埔/玉里林道–馬博拉斯橫斷–東埔/玉里林道)
+  route_id: 2-9天-東埔-玉里林道-馬博拉斯橫斷-東埔-玉里林道
+  difficulty: null
+- code: '97'
+  display_name: (3級)  七卡、雪山東峰單日往返
+  route_id: 七卡-雪山東峰單日往返
+  difficulty: 3級
+- code: '98'
+  display_name: (3級)  七卡、雪山東峰
+  route_id: 七卡-雪山東峰
+  difficulty: 3級
+- code: '99'
+  display_name: (3級) 雪山主峰(多日行程)
+  route_id: 雪山主峰-多日行程
+  difficulty: 3級
+- code: '100'
+  display_name: (4級) 雪山主峰(單日往返)
+  route_id: 雪山主峰-單日往返
+  difficulty: 4級
+- code: '102'
+  display_name: (4級) 雪山北峰、翠池
+  route_id: 雪山北峰-翠池
+  difficulty: 4級
+- code: '103'
+  display_name: 雪地訓練申請案
+  route_id: 雪地訓練申請案
+  difficulty: null
+- code: '104'
+  display_name: (3級) 志佳陽大山
+  route_id: 志佳陽大山
+  difficulty: 3級
+- code: '105'
+  display_name: (4級) 志佳陽-雪山線
+  route_id: 志佳陽-雪山線
+  difficulty: 4級
+- code: '106'
+  display_name: (5級) 志佳陽-雪山北峰線
+  route_id: 志佳陽-雪山北峰線
+  difficulty: 5級
+- code: '107'
+  display_name: (3級) 推論山單日往返
+  route_id: 推論山單日往返
+  difficulty: 3級
+- code: '108'
+  display_name: (4級) 大劍線
+  route_id: 大劍線
+  difficulty: 4級
+- code: '118'
+  display_name: (4級) 大霸線
+  route_id: 大霸線
+  difficulty: 4級
+- code: '119'
+  display_name: (5級) 大霸線(首日住宿中霸山屋)
+  route_id: 大霸線-首日住宿中霸山屋
+  difficulty: 5級
+- code: '120'
+  display_name: (5級) 大霸北稜線
+  route_id: 大霸北稜線
+  difficulty: 5級
+- code: '121'
+  display_name: (5級) 聖稜線I型
+  route_id: 聖稜線i型
+  difficulty: 5級
+- code: '122'
+  display_name: (5級) 聖稜線O型
+  route_id: 聖稜線o型
+  difficulty: 5級
+- code: '123'
+  display_name: (5級) 聖稜線Y型
+  route_id: 聖稜線y型
+  difficulty: 5級
+- code: '124'
+  display_name: (6級) 其他路線
+  route_id: 其他路線
+  difficulty: 6級
+- code: '609'
+  display_name: 苗栗三義火炎山自然保留區
+  route_id: 苗栗三義火炎山自然保留區
+  difficulty: null
+- code: '610'
+  display_name: 淡水河紅樹林自然保留區
+  route_id: 淡水河紅樹林自然保留區
+  difficulty: null
+- code: '611'
+  display_name: 坪林台灣油杉自然保留區
+  route_id: 坪林台灣油杉自然保留區
+  difficulty: null
+- code: '612'
+  display_name: 烏石鼻海岸自然保留區
+  route_id: 烏石鼻海岸自然保留區
+  difficulty: null
+- code: '613'
+  display_name: 南澳闊葉樹林自然保留區
+  route_id: 南澳闊葉樹林自然保留區
+  difficulty: null
+- code: '614'
+  display_name: 九九峰自然保留區
+  route_id: 九九峰自然保留區
+  difficulty: null
+- code: '615'
+  display_name: 臺灣一葉蘭自然保留區
+  route_id: 臺灣一葉蘭自然保留區
+  difficulty: null
+- code: '626'
+  display_name: 海岸山脈臺東蘇鐵自然保護區
+  route_id: 海岸山脈臺東蘇鐵自然保護區
+  difficulty: null
+- code: '627'
+  display_name: 翡翠水庫食蛇龜野生動物保護區
+  route_id: 翡翠水庫食蛇龜野生動物保護區
+  difficulty: null
+- code: '628'
+  display_name: 玉里野生動物保護區
+  route_id: 玉里野生動物保護區
+  difficulty: null
+- code: '629'
+  display_name: 插天山自然保留區 - 福巴越嶺步道
+  route_id: 插天山自然保留區-福巴越嶺步道
+  difficulty: null
+- code: '630'
+  display_name: 插天山自然保留區 - 北插天山步道及其支線
+  route_id: 插天山自然保留區-北插天山步道及其支線
+  difficulty: null
+- code: '631'
+  display_name: 插天山自然保留區 - 除北插天山步道及福巴越嶺步道外其他路線
+  route_id: 插天山自然保留區-除北插天山步道及福巴越嶺步道外其他路線
+  difficulty: null
+- code: '632'
+  display_name: 鴛鴦湖自然保留區
+  route_id: 鴛鴦湖自然保留區
+  difficulty: null
+- code: '157'
+  display_name: 入山證申請
+  route_id: 入山證申請
+  difficulty: null
+- code: '158'
+  display_name: 向陽山屋
+  route_id: 向陽山屋
+  difficulty: null
+- code: '159'
+  display_name: 嘉明湖山屋/營地
+  route_id: 嘉明湖山屋-營地
+  difficulty: null
+- code: '160'
+  display_name: 檜谷山莊/營地
+  route_id: 檜谷山莊-營地
+  difficulty: null
+- code: '161'
+  display_name: 天池山莊/營地
+  route_id: 天池山莊-營地
+  difficulty: null
+- code: '125'
+  display_name: (5級) 雪山西稜線
+  route_id: 雪山西稜線
+  difficulty: 5級
+- code: '128'
+  display_name: 1~15天(其他路線)
+  route_id: 1-15天-其他路線
+  difficulty: null
+- code: '130'
+  display_name: 3~5天其他路線(東埔/塔塔加 - 八通關玉山線 - 塔塔加/東埔)
+  route_id: 3-5天其他路線-東埔-塔塔加-八通關玉山線-塔塔加-東埔
+  difficulty: null
+- code: '131'
+  display_name: 4~9天其他路線(南安/東埔 - 八通關越嶺線 – 東埔/南安)
+  route_id: 4-9天其他路線-南安-東埔-八通關越嶺線-東埔-南安
+  difficulty: null
+- code: '27'
+  display_name: 南湖中央尖 (北一段線)
+  route_id: 南湖中央尖-北一段線
+  difficulty: null
+- code: '28'
+  display_name: 北一段縱走北二段
+  route_id: 北一段縱走北二段
+  difficulty: null
+- code: '29'
+  display_name: 北二段（鬼門關斷崖）
+  route_id: 北二段-鬼門關斷崖
+  difficulty: null
+- code: '30'
+  display_name: 閂山鈴鳴山
+  route_id: 閂山鈴鳴山
+  difficulty: null
+- code: '31'
+  display_name: 閂山單攻
+  route_id: 閂山單攻
+  difficulty: null
+- code: '32'
+  display_name: 畢祿縱走羊頭
+  route_id: 畢祿縱走羊頭
+  difficulty: null
+- code: '33'
+  display_name: 畢祿山
+  route_id: 畢祿山
+  difficulty: null
+- code: '6'
+  display_name: 2~3天 (南安 - 瓦拉米 - 南安)
+  route_id: 2-3天-南安-瓦拉米-南安
+  difficulty: null
+- code: '7'
+  display_name: 瓦拉米單日往返
+  route_id: 瓦拉米單日往返
+  difficulty: null
+- code: '10'
+  display_name: 2~3天(東埔 –八通關 – 東埔)
+  route_id: 2-3天-東埔-八通關-東埔
+  difficulty: null
+- code: '81'
+  display_name: 庫哈諾辛山/關山單日往返
+  route_id: 庫哈諾辛山-關山單日往返
+  difficulty: null
+- code: '109'
+  display_name: 北一段縱走北二段(南往北)
+  route_id: 北一段縱走北二段-南往北
+  difficulty: null
+- code: '110'
+  display_name: (5級) 大小劍線
+  route_id: 大小劍線
+  difficulty: 5級
+- code: '111'
+  display_name: (5級) 雪劍線
+  route_id: 雪劍線
+  difficulty: 5級
+- code: '112'
+  display_name: (3級) 武陵一秀或二秀 (桃山、池有山) 單日往返
+  route_id: 武陵一秀或二秀-桃山-池有山-單日往返
+  difficulty: 3級
+- code: '113'
+  display_name: (3級) 武陵三秀 (不包含品田山)
+  route_id: 武陵三秀-不包含品田山
+  difficulty: 3級
+- code: '114'
+  display_name: (4級) 喀拉業山單日長程往返
+  route_id: 喀拉業山單日長程往返
+  difficulty: 4級
+- code: '115'
+  display_name: (4級) 品田山單日長程往返
+  route_id: 品田山單日長程往返
+  difficulty: 4級
+- code: '116'
+  display_name: (4級) 武陵四秀線
+  route_id: 武陵四秀線
+  difficulty: 4級
+- code: '51'
+  display_name: 3~8天(南安 - 八通關越嶺線東段 - 南安)
+  route_id: 3-8天-南安-八通關越嶺線東段-南安
+  difficulty: null
+- code: '55'
+  display_name: 其他（非傳統路線但進入區域屬生態保護區）
+  route_id: 其他-非傳統路線但進入區域屬生態保護區
+  difficulty: null
+- code: '616'
+  display_name: 出雲山自然保留區
+  route_id: 出雲山自然保留區
+  difficulty: null
+- code: '617'
+  display_name: 大武山自然保留區
+  route_id: 大武山自然保留區
+  difficulty: null
+- code: '618'
+  display_name: 大武事業區台灣穗花杉自然保留區
+  route_id: 大武事業區台灣穗花杉自然保留區
+  difficulty: null
+- code: '619'
+  display_name: 台東紅葉村台東蘇鐵自然保留區
+  route_id: 台東紅葉村台東蘇鐵自然保留區
+  difficulty: null
+- code: '620'
+  display_name: 挖子尾自然保留區
+  route_id: 挖子尾自然保留區
+  difficulty: null
+- code: '622'
+  display_name: 甲仙四德化石自然保護區
+  route_id: 甲仙四德化石自然保護區
+  difficulty: null
+- code: '623'
+  display_name: 十八羅漢山自然保護區
+  route_id: 十八羅漢山自然保護區
+  difficulty: null
+- code: '624'
+  display_name: 關山臺灣海棗自然保護區
+  route_id: 關山臺灣海棗自然保護區
+  difficulty: null
+- code: '625'
+  display_name: 大武臺灣油杉自然保護區
+  route_id: 大武臺灣油杉自然保護區
+  difficulty: null
+- code: '661'
+  display_name: 其他路線_南湖大山線
+  route_id: 其他路線_南湖大山線
+  difficulty: null
+- code: '662'
+  display_name: 其他路線_奇萊群峰
+  route_id: 其他路線_奇萊群峰
+  difficulty: null
+- code: '665'
+  display_name: 奇萊主、北峰線
+  route_id: 奇萊主-北峰線
+  difficulty: null
+- code: '666'
+  display_name: 奇萊連峰
+  route_id: 奇萊連峰
+  difficulty: null
+- code: '667'
+  display_name: 南湖大山線(因承載量異動，入園日期為114.7.1以後者適用)
+  route_id: 南湖大山線-因承載量異動-入園日期為114-7-1以後者適用
+  difficulty: null
+- code: '675'
+  display_name: 奇萊北屏風山線
+  route_id: 奇萊北屏風山線
+  difficulty: null

@@ -1,0 +1,26 @@
+# Route destinations — 每條路線在 apply_1.aspx 選了後跳轉的 unit/cid/fid。
+# 必須親自登入後對每條路線「點進去」抓 URL（或從 HAR 看跳轉）。
+#
+# route_id 對應 config/routes.yaml 內的 route_id。
+# 複製成 config/routes_destinations.yaml（建議 commit，不含個資；但若有業務敏感性可 gitignore）。
+#
+# 從 HAR 確認的範例：
+#   apply_1.aspx 點「(4級) 秀霸線」(route_code=156) 後跳 apply_1_2.aspx?
+#       unit=e6dd4652-2d37-4346-8f5d-6e538353e0c2 &cid=156 &fid=8 &camp_id=0
+
+destinations:
+  # route_id（同 routes.yaml）→ subsystem + 跳轉參數
+  秀霸線:
+    subsystem: national_park       # national_park / forest_camp / forest_area / npa
+    route_code: 156
+    unit: e6dd4652-2d37-4346-8f5d-6e538353e0c2
+    fid: 8
+    camp_id: 0
+
+  # 範本，待補：
+  # 雪山主峰-單日往返:
+  #   subsystem: national_park
+  #   route_code: 100
+  #   unit: <抓出來填>
+  #   fid: <抓出來填>
+  #   camp_id: 0
